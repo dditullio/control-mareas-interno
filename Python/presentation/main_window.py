@@ -1,4 +1,3 @@
-
 import os
 import sys
 from PySide6.QtCore import Qt, QEvent, QDate
@@ -13,6 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from infrastructure.repositories import CatalogRepository
 from presentation.stage_list_item_widget import StageListItemWidget
+from presentation.species_list_item_widget import SpeciesListItemWidget
 from domain.entities import Especie
 
 class MainWindow(QMainWindow):
@@ -67,10 +67,10 @@ class MainWindow(QMainWindow):
         # Layout para los campos de fecha
         fechas_layout = QHBoxLayout()
         self.etapa_start_date = QDateEdit(calendarPopup=True)
-        self.etapa_start_date.setDisplayFormat("yyyy-MM-dd")
+        self.etapa_start_date.setDisplayFormat("dd/MM/yyyy")
         self.etapa_start_date.setDate(QDate.currentDate())
         self.etapa_end_date = QDateEdit(calendarPopup=True)
-        self.etapa_end_date.setDisplayFormat("yyyy-MM-dd")
+        self.etapa_end_date.setDisplayFormat("dd/MM/yyyy")
         self.etapa_end_date.setDate(QDate.currentDate())
         fechas_layout.addWidget(QLabel("Fecha Inicial:"))
         fechas_layout.addWidget(self.etapa_start_date)
@@ -91,6 +91,11 @@ class MainWindow(QMainWindow):
         self.especie_combo = QComboBox()
         self.especie_combo.setEditable(True)
         self.especie_combo.setInsertPolicy(QComboBox.NoInsert)
+        self.especie_combo.lineEdit().setClearButtonEnabled(True)
+        self.especie_combo.lineEdit().focusInEvent = lambda event: self.especie_combo.lineEdit().selectAll()
+        # Conectar la señal returnPressed para agregar la especie
+        self.especie_combo.lineEdit().returnPressed.connect(self._add_target_specie)
+
         self.especies_list = QListWidget()
         self.add_especie_btn = QPushButton("Agregar Especie")
         self.add_especie_btn.clicked.connect(self._add_target_specie)
@@ -128,6 +133,7 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(procesos_group)
 
         self._setup_enter_navigation()
+
     def _load_catalogs(self):
         """Carga los datos de los catálogos en los ComboBox."""
         foxpro_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'FoxPro'))
@@ -150,45 +156,76 @@ class MainWindow(QMainWindow):
             self.especie_combo.addItem(especie.display_name, userData=especie)
 
     def _add_target_specie(self):
-        """Añade la especie seleccionada a la lista de especies objetivo."""
+        """Añade la especie seleccionada a la lista de especies objetivo, manteniendo el orden alfabético."""
         selected_index = self.especie_combo.currentIndex()
-        if selected_index <= 0:
+        if selected_index <= 0:  # No agregar si es el texto placeholder o no hay nada seleccionado
             return
 
         specie = self.especie_combo.itemData(selected_index)
         if not isinstance(specie, Especie):
             return
 
+        # Evitar duplicados
         for i in range(self.especies_list.count()):
             item = self.especies_list.item(i)
             if item.data(Qt.UserRole).codinidep == specie.codinidep:
+                QMessageBox.warning(self, "Especie Duplicada", "La especie ya se encuentra en la lista.")
+                self.especie_combo.setCurrentIndex(0)
+                self.especie_combo.lineEdit().clear()
+                self.especie_combo.setFocus()
                 return
 
-        list_item = QListWidgetItem(specie.display_name)
+        list_item = QListWidgetItem()
         list_item.setData(Qt.UserRole, specie)
-        self.especies_list.addItem(list_item)
+
+        # Encontrar la posición correcta para insertar y mantener el orden alfabético
+        insert_row = 0
+        while insert_row < self.especies_list.count():
+            item = self.especies_list.item(insert_row)
+            existing_specie = item.data(Qt.UserRole)
+            if specie.display_name < existing_specie.display_name:
+                break
+            insert_row += 1
+        
+        self.especies_list.insertItem(insert_row, list_item)
+
+        item_widget = SpeciesListItemWidget(specie.display_name, list_item)
+        item_widget.deleted.connect(self._remove_target_specie)
+        list_item.setSizeHint(item_widget.sizeHint())
+        self.especies_list.setItemWidget(list_item, item_widget)
+        
+        # Limpiar y re-enfocar para la siguiente entrada
+        self.especie_combo.setCurrentIndex(0)
+        self.especie_combo.lineEdit().clear()
+        self.especie_combo.setFocus()
+
+    def _remove_target_specie(self, item_to_delete):
+        """Elimina un item de la lista de especies."""
+        row = self.especies_list.row(item_to_delete)
+        if row >= 0:
+            self.especies_list.takeItem(row)
 
     def eventFilter(self, watched, event):
         """Filtro de eventos para manejar la tecla Enter como Tab."""
         if event.type() == QEvent.KeyPress and event.key() in (Qt.Key_Enter, Qt.Key_Return):
-            # Mapeo del siguiente widget en el orden de tabulación
             next_widget_map = {
                 self.num_marea: self.anio_marea,
                 self.anio_marea: self.observador_combo,
                 self.observador_combo: self.buque_combo,
-                self.buque_combo: self.etapa_start_date,
+                self.buque_combo: self.especie_combo,
+                self.especie_combo: self.etapa_start_date,
                 self.etapa_start_date: self.etapa_end_date,
-                self.etapa_end_date: self.add_etapa_btn  # Al final, simula clic en el botón
+                self.etapa_end_date: self.add_etapa_btn
             }
             
             next_widget = next_widget_map.get(watched)
 
             if next_widget:
                 if next_widget is self.add_etapa_btn:
-                    self.add_etapa_btn.click()  # Simular clic
+                    self.add_etapa_btn.click()
                 else:
                     next_widget.setFocus()
-                return True  # Evento manejado
+                return True
 
         return super().eventFilter(watched, event)
 
@@ -216,14 +253,12 @@ class MainWindow(QMainWindow):
             if start_date <= existing_end and existing_start <= end_date:
                 QMessageBox.critical(self, "Error de Solapamiento",
                                      f"La etapa se solapa con una existente: "
-                                     f"{existing_start.toString('yyyy-MM-dd')} a {existing_end.toString('yyyy-MM-dd')}")
+                                     f"{existing_start.toString('dd/MM/yyyy')} a {existing_end.toString('dd/MM/yyyy')}")
                 return
 
-        # Crear el QListWidgetItem pero no añadirlo directamente
         list_item = QListWidgetItem()
         list_item.setData(Qt.UserRole, (start_date, end_date))
 
-        # Encontrar la posición correcta para mantener la lista ordenada
         insert_row = 0
         while insert_row < self.etapas_list.count():
             item = self.etapas_list.item(insert_row)
@@ -234,13 +269,11 @@ class MainWindow(QMainWindow):
         
         self.etapas_list.insertItem(insert_row, list_item)
         
-        # Crear y asignar el widget personalizado
         item_widget = StageListItemWidget(start_date, end_date, list_item)
         item_widget.deleted.connect(self._remove_trip_stage)
         list_item.setSizeHint(item_widget.sizeHint())
         self.etapas_list.setItemWidget(list_item, item_widget)
 
-        # Limpiar fechas y resetear foco
         self.etapa_start_date.setDate(QDate.currentDate())
         self.etapa_end_date.setDate(QDate.currentDate())
         self.etapa_start_date.setFocus()
@@ -250,4 +283,3 @@ class MainWindow(QMainWindow):
         row = self.etapas_list.row(item_to_delete)
         if row >= 0:
             self.etapas_list.takeItem(row)
-

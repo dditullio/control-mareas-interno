@@ -18,7 +18,7 @@ class StageListItemWidget(QWidget):
         layout.setSpacing(10)
 
         # Formatear las fechas para mostrarlas
-        date_text = f"{start_date.toString('yyyy-MM-dd')} - {end_date.toString('yyyy-MM-dd')}"
+        date_text = f"{start_date.toString('dd/MM/yyyy')} - {end_date.toString('dd/MM/yyyy')}"
         self.label = QLabel(date_text)
         self.label.setStyleSheet("font-size: 11px;")
 
