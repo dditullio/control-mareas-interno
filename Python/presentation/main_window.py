@@ -21,6 +21,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Control de Mareas - INIDEP")
         self.setGeometry(100, 100, 800, 600)
 
+        self.all_species = []
+        self.species_search_mode = 'common_first'  # 'common_first' or 'scientific_first'
+
         self._setup_ui()
         self._load_catalogs()
 
@@ -64,7 +67,6 @@ class MainWindow(QMainWindow):
         etapas_group = QGroupBox("Etapas de Marea")
         etapas_v_layout = QVBoxLayout()
         
-        # Layout para los campos de fecha
         fechas_layout = QHBoxLayout()
         self.etapa_start_date = QDateEdit(calendarPopup=True)
         self.etapa_start_date.setDisplayFormat("dd/MM/yyyy")
@@ -88,18 +90,29 @@ class MainWindow(QMainWindow):
 
         especies_group = QGroupBox("Especies Objetivo")
         especies_v_layout = QVBoxLayout()
+
+        especie_input_layout = QHBoxLayout()
         self.especie_combo = QComboBox()
         self.especie_combo.setEditable(True)
         self.especie_combo.setInsertPolicy(QComboBox.NoInsert)
         self.especie_combo.lineEdit().setClearButtonEnabled(True)
         self.especie_combo.lineEdit().focusInEvent = lambda event: self.especie_combo.lineEdit().selectAll()
-        # Conectar la señal returnPressed para agregar la especie
         self.especie_combo.lineEdit().returnPressed.connect(self._add_target_specie)
+        
+        self.toggle_species_view_btn = QPushButton("⥃")
+        self.toggle_species_view_btn.setCheckable(True)
+        self.toggle_species_view_btn.setFixedWidth(40)
+        self.toggle_species_view_btn.setToolTip("Alternar entre 'Nombre Común (Científico)' y 'Nombre Científico (Común)'")
+        self.toggle_species_view_btn.clicked.connect(self._toggle_species_view)
+
+        especie_input_layout.addWidget(self.especie_combo)
+        especie_input_layout.addWidget(self.toggle_species_view_btn)
 
         self.especies_list = QListWidget()
         self.add_especie_btn = QPushButton("Agregar Especie")
         self.add_especie_btn.clicked.connect(self._add_target_specie)
-        especies_v_layout.addWidget(self.especie_combo)
+
+        especies_v_layout.addLayout(especie_input_layout)
         especies_v_layout.addWidget(self.especies_list)
         especies_v_layout.addWidget(self.add_especie_btn)
         especies_group.setLayout(especies_v_layout)
@@ -150,22 +163,56 @@ class MainWindow(QMainWindow):
         for buque in buques:
             self.buque_combo.addItem(buque.display_name, userData=buque)
 
-        especies = repo.get_especies()
+        # Cargar y guardar todas las especies, luego poblar el combo
+        self.all_species = sorted(repo.get_especies(), key=lambda e: e.nom_vul_cas or '')
+        self._repopulate_species_combo()
+
+    def _toggle_species_view(self):
+        """Cambia el modo de visualización de las especies y repuebla el ComboBox."""
+        self.species_search_mode = 'scientific_first' if self.species_search_mode == 'common_first' else 'common_first'
+        self._repopulate_species_combo()
+        self.especie_combo.setFocus()
+
+    def _repopulate_species_combo(self):
+        """Limpia y vuelve a llenar el ComboBox de especies según el modo de búsqueda actual."""
+        current_text = self.especie_combo.lineEdit().text()
+        current_data = self.especie_combo.currentData()
+
+        self.especie_combo.blockSignals(True)
+        self.especie_combo.clear()
         self.especie_combo.addItem("Buscar especie...", userData=None)
-        for especie in especies:
-            self.especie_combo.addItem(especie.display_name, userData=especie)
+
+        for especie in self.all_species:
+            display_name = ""
+            if self.species_search_mode == 'common_first':
+                display_name = especie.display_name
+            else:  # scientific_first
+                display_name = f"{especie.nom_cient} ({especie.nom_vul_cas})"
+            
+            self.especie_combo.addItem(display_name, userData=especie)
+        
+        self.especie_combo.blockSignals(False)
+
+        # Intentar restaurar la selección o texto
+        if current_data:
+            index = self.especie_combo.findData(current_data)
+            if index != -1:
+                self.especie_combo.setCurrentIndex(index)
+            else:
+                self.especie_combo.lineEdit().setText(current_text)
+        else:
+            self.especie_combo.lineEdit().setText(current_text)
 
     def _add_target_specie(self):
         """Añade la especie seleccionada a la lista de especies objetivo, manteniendo el orden alfabético."""
         selected_index = self.especie_combo.currentIndex()
-        if selected_index <= 0:  # No agregar si es el texto placeholder o no hay nada seleccionado
+        if selected_index <= 0:
             return
 
         specie = self.especie_combo.itemData(selected_index)
         if not isinstance(specie, Especie):
             return
 
-        # Evitar duplicados
         for i in range(self.especies_list.count()):
             item = self.especies_list.item(i)
             if item.data(Qt.UserRole).codinidep == specie.codinidep:
@@ -178,23 +225,23 @@ class MainWindow(QMainWindow):
         list_item = QListWidgetItem()
         list_item.setData(Qt.UserRole, specie)
 
-        # Encontrar la posición correcta para insertar y mantener el orden alfabético
         insert_row = 0
         while insert_row < self.especies_list.count():
             item = self.especies_list.item(insert_row)
             existing_specie = item.data(Qt.UserRole)
+            # Ordenar por el display_name por defecto de la entidad para consistencia
             if specie.display_name < existing_specie.display_name:
                 break
             insert_row += 1
         
         self.especies_list.insertItem(insert_row, list_item)
 
+        # Usar el display_name por defecto para la lista de objetivos
         item_widget = SpeciesListItemWidget(specie.display_name, list_item)
         item_widget.deleted.connect(self._remove_target_specie)
         list_item.setSizeHint(item_widget.sizeHint())
         self.especies_list.setItemWidget(list_item, item_widget)
         
-        # Limpiar y re-enfocar para la siguiente entrada
         self.especie_combo.setCurrentIndex(0)
         self.especie_combo.lineEdit().clear()
         self.especie_combo.setFocus()
