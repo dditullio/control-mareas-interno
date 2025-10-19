@@ -1,0 +1,531 @@
+;************************************************
+;*           Surfer Default Settings            *
+;*                                              *
+;*  Format:                                     *
+;*  Name[+ | *] = [Value]   [;Comment]          *
+;*                                              *
+;*  +  Save setting within session only         *
+;*  *  Save setting within and between sessions *
+;*                                              *
+;************************************************
+
+;=========== File Open ==========================
+InSrf =           ;Default filename
+
+;=========== File Import =========================
+fiFile =          ;Import filename
+
+;=========== File Print =========================
+prReduce+ =       ;Printing method (Truncate,Fit to page,tIle)
+prScale =         ;Printing scale factor % (100=actual size)
+prXover+ =        ;Printing horizontal overlap (Page Units)
+prYover+ =        ;Printing vertical overlap (Page Units)
+
+;=========== File Page Layout ===================
+xPageSize* = 12000 ;Page width (.001")
+yPageSize* = 8000  ;Page height (.001")
+Landscape* = y    ;Landscape mode (Y,N)
+
+;=========== Edit Paste Special==================
+PasteFmt+ =       ;Paste format string as it appears in dialog
+PasteBreak+ =     ;Break apart metafiles (Y,N)
+
+;=========== Arrange Rotate =====================
+Rotation =        ;For Arrange-Rotate command (in degrees)
+
+;=========== Grid Data ==========================
+gdOutGrd =        ;Output filename [.GRD]
+gdOutFmt =        ;Output file format (Binary,Ascii,Xyz)
+gdXcol+ =         ;X data column (0-255)
+gdYcol+ =         ;Y data column (0-255)
+gdZcol+ =         ;Z data column (0-255)
+gdXmin =          ;Minimum X of grid in data units
+gdXmax =          ;Maximum X of grid in data units
+gdYmin =          ;Minimum Y of grid in data units
+gdYmax =          ;Maximum Y of grid in data units
+gdNrow+ =         ;Number of grid lines in Y direction
+gdNcol+ =         ;Number of grid lines in X direction
+gdMethod* = k     ;Grid Method (InvDist,Kriging,MinCurv,Polynomial regression,Radial basis,Shepards,Triangulation)
+
+;=========== Grid Data Search ===================
+gdsMethod =       ;Search method (All,Simple,Quadrant,Octant)
+gdsDatPerSect =   ;Number of nearest points for search
+gdsMaxEmpty =     ;Max number of empty sectors
+gdsMinData =      ;Min number of data points for a valid sector
+gdsRad1 =         ;Search ellipse radius in data units
+gdsRad2 =         ;Search ellipse radius in data units
+gdsAngle =        ;Search ellipse angle
+
+;=========== Grid Data Options ==================
+gdoIgnoreOut+ =   ;Ignore points outside grid (Y,N)
+gdoDupMethod =    ;Duplicate data handling (Ignore,Delete,Average,Sum)
+gdoPower+ =       ;Inverse Distance power
+gdoSmooth+ =      ;Smoothing factor for Inverse distance, Shepards
+gdoRad1 =         ;Anisotropy radius 1 for Shepards
+gdoRad2 =         ;Anisotropy radius 2 for Shepards
+gdoRatio =        ;Anisotropy ratio for Inverse distance, Radial Basis
+gdoAngle =        ;Anisotropy angle
+gdoVType1 =       ;Variogram Type #1 (None, Exponential, Gaussian, Hole Effect, Linear, Quadratic, Rational Quadratic, Spherical)
+gdoVScale1 =      ;Variogram Scale #1 
+gdoVLength1 =     ;Variogram correlation length #1
+gdoVRatio1 =      ;Variogram anisotropy ratio #1
+gdoVAngle1 =      ;Variogram anisotropy angle #1
+gdoVType2 =       ;Variogram Type #2 (None, Exponential, Gaussian, Hole Effect, Linear, Quadratic, Rational Quadratic, Spherical)
+gdoVScale2 =      ;Variogram Scale #2 
+gdoVLength2 =     ;Variogram correlation length #2
+gdoVRatio2 =      ;Variogram anisotropy ratio #2
+gdoVAngle2 =      ;Variogram anisotropy angle #2
+gdoVType3 =       ;Variogram Type #3 (None, Exponential, Gaussian, Hole Effect, Linear, Quadratic, Rational Quadratic, Spherical)
+gdoVScale3 =      ;Variogram Scale #3 
+gdoVLength3 =     ;Variogram correlation length #3
+gdoVRatio3 =      ;Variogram anisotropy ratio #3
+gdoVAngle3 =      ;Variogram anisotropy angle #3
+gdoCme =          ;Variogram error variance
+gdoCms =          ;Variogram micro variance
+gdoDrift =        ;Kriging drift (No drift, Linear, Quadratic)
+gdoBasis+ =       ;Radial basis type (Inverse multiquadric, multiLog, multiQuadric, Natural cubic spline, Thin plate spline)
+gdoRsq =          ;R squared
+gdoXorder+ =      ;Regression X order
+gdoYorder+ =      ;Regression Y order
+gdoTotOrder+ =    ;Regression total order
+gdoCopyCoef+ =    ;Copy Regression coefficients (Y,N)
+gdoMaxIter =      ;Max. iterations for minimum curvature
+gdoMaxResid =     ;Max. residual for minimum curvature
+
+;=========== Grid Function ======================
+gfEquation+ =     ;Function equation
+gfXmin+ =         ;Function minimum X
+gfXmax+ =         ;Function maximum X
+gfXinc+ =         ;Function X increment
+gfYmin+ =         ;Function minimum Y
+gfYmax+ =         ;Function maximum Y
+gfYinc+ =         ;Function Y increment
+gfOutGrd =        ;Function output grid [.GRD]
+gfOutFmt =        ;Function grid format (Binary,Ascii,XYZ)
+
+;=========== Grid Math ==========================
+gmInGrd1 =        ;Math input grid 1 name [.GRD]
+gmInGrd2 =        ;Math input grid 2 name [.GRD]
+gmOutGrd =        ;Math output grid name [.GRD]
+gmOutFmt =        ;Output file format (Binary,Ascii,Xyz)
+gmEquation+ =     ;Math equation
+
+;=========== Grid Calculus ======================
+gcInGrd =         ;Input filename [.GRD]
+gcOutGrd =        ;Output filename [.GRD]
+gcOutFmt =        ;Output file format (Binary,Ascii,Xyz)
+gcOperation =     ;Grid calculus operation (Derivative, Terrain, Operators, Fourier).
+gcDerivative+ =   ;Directional Derivative type (First, Second, Curvature).
+gcAngle+ =        ;Directional derivative "direction".
+gcTerrain+ =      ;Terrain analysis option (Slope, Aspect, Curvature, Plan, Tangential).
+gcGradMin+ =      ;Minimum gradient to compute aspect and curvature.
+gcDiffInteg+ =    ;Differentiation option (Gradient, Laplacian, Biharmonic, Integrate).
+gcFourier+ =      ;Fourier analysis option (Correlogram, Periodogram). 
+
+;=========== Grid Matrix Smooth =================
+gmsInGrd =        ;Smooth input file name [.GRD]
+gmsOutGrd =       ;Smooth output file name [.GRD]
+gmsOutFmt =       ;Smooth output format (Binary,Ascii,Xyz)
+gmsMethod+ =      ;Smooth method (Average,Weighted)
+gmsPower+ =       ;Weighted smooth power
+gmsCenWt+ =       ;Matrix smooth center weight
+gmsNCol+ =        ;Number of columns in smooth matrix
+gmsNRow+ =        ;Number of rows in smooth matrix
+
+;=========== Grid Spline Smooth =================
+gssInGrd =        ;Smooth input file name [.GRD]
+gssOutGrd =       ;Smooth output file name [.GRD]
+gssOutFmt =       ;Smooth output format (Binary,Ascii,Xyz)
+gssInsRow+ =      ;Number of nodes to insert
+gssInsCol+ =
+gssNRow+ =        ;Spline smooth new grid size
+gssNCol+ =
+gssMethod+ =      ;Spline smooth method (Insert,Recalc)
+
+;=========== Grid Blank =========================
+gbInGrd =         ;Blank input grid name [.GRD]
+gbInBln =         ;Blank boundary file name [.BLN]
+gbOutGrd =        ;Blanked output grid name [.GRD]
+gbOutFmt =        ;Blanked output format (Binary,Ascii,Xyz)
+
+;=========== Grid Convert =======================
+gcInGrd =         ;Input grid file name [.GRD]
+gcOutGrd =        ;Output grid file name [.GRD]
+gcOutFmt =        ;Output grid format (Binary,Ascii,Xyz)
+
+;=========== Grid Extract ========================
+gxInGrd =         ;Input filename [.GRD]
+gxOutGrd =        ;Output grid file [.GRD]
+gxOutFmt =        ;Output grid format (Binary, Ascii, Xyz)
+gxr1 =            ;First row of subgrid
+gxc1 =            ;First col of subgrid
+gxr2 =            ;Last row of subgrid
+gxc2 =            ;Last col of subgrid
+gxrFreq =         ;Row frequency
+gxcFreq =         ;Col frequency
+
+;=========== Grid Transform ======================
+gtInGrd =         ;Input filename [.GRD]
+gtOutGrd =        ;Output grid file [.GRD]
+gtOutFmt =        ;Output grid format (Binary, Ascii, Xyz)
+gtOp+ =           ;Operation (Offset,Scale,Rotate,Xmirror,Ymirror)
+gtxOff+ =         ;X offset
+gtyOff+ =         ;Y offset
+gtxScl+ =         ;X scale
+gtyScl+ =         ;Y scale
+gtAngle+ =        ;Rotation angle (in degrees)
+
+;=========== Grid Volume ========================
+gvUpType =        ;Upper Surface (File,Constant)
+gvUpGrd =         ;Upper surface grid file name [.GRD]
+gvUpLevel+ =      ;Upper surface constant level value
+gvLowType =       ;Lower surface:  (File,Constant)
+gvLowGrd =        ;Lower surface grid file name [.GRD]
+gvLowLevel+ =     ;Lower surface sonstant level value
+
+;=========== Grid Slice =========================
+gsInGrd =         ;Input grid file name [.GRD]
+gsInBln =         ;Input boundary file [.BLN]
+gsOutside+ =      ;Use clip value outside grid (Y,N)
+gsBlanked+ =      ;Use clip value over blank area (Y,N)
+gsOutBln =        ;Output boundary file [.BLN]
+gsOutDat =        ;Output Grapher data file
+
+;=========== Grid Residuals =====================
+grInGrd =         ;Input grid file [.GRD]
+grXcol =          ;X worksheet column (0-255)
+grYcol =          ;Y worksheet column (0-255)
+grZcol =          ;Z worksheet column (0-255)
+grResidCol =      ;Column to store residuals in (0-255)
+
+;=========== Grid Edit ==========================
+geInGrd =         ;Grid editor input grid file [.GRD]
+geInLvl =         ;Grid editor input level file
+geOutLvl =        ;Grid editor output level file
+geOutGrd =        ;Grid editor output grid file [.GRD]
+geOutFmt =        ;Grid editor output grid format (Binary, Ascii, Xyz)
+
+;=========== Map Load Basemap ===================
+bmFile =          ;Load Basemap filename
+
+;=========== Map Contour ========================
+cInGrd =          ;Input grid file name [.GRD]
+cMin =            ;Minimum contour in Z data units
+cMax =            ;Maximum contour in Z data units
+cInt =            ;Contour interval in Z data units
+cFill+ =          ;Fill contours (Y,N)
+cSmooth+ =        ;Smooth contours (Y,N)
+cHachDir+ =       ;Hachure direction (Down,Up)
+cColorScl+ =      ;Display color scale (Y,N)
+cLabUp+ =         ;Orient labels "uphill" (Y,N)
+cHachAll+ =       ;Hachure both closed and open contours (Y,N)
+cSmoothAmt+ =     ;Smooth amount (Low,Medium,High)
+cLabBeg+ =        ;First labeled contour (0=first)
+cLabFreq+ =       ;Labeled contour line frequency
+cLLDist+ =        ;Minimum label-label distance in page units
+cLEDist+ =        ;Minimum label-edge distance in page units
+cCurveTol+ =      ;Label curve tolerance (>1.0)
+cHachBeg+ =       ;First hachured contour (0=first)
+cHachFreq+ =      ;Hachured contour line frequency
+cHachLen+ =       ;Contour line hachure length in page units
+cFont+ =          ;Contour label font attributes
+cLabFmt+ =        ;Contour label format attributes
+cMinLine+ =       ;Minimum contour line attributes
+cMaxLine+ =       ;Maximum contour line attributes
+cMinFill+ =       ;Minimum contour fill attributes
+cMaxFill+ =       ;Maximum contour fill attributes
+cInLvl =          ;Input level file [.LVL]
+cOutLvl =         ;Output level file [.LVL]
+
+;=========== Map Post ===========================
+pXcol =           ;Wks column containing X coords (0-255)
+pYcol =           ;Wks column containing Y coords (0-255)
+pLabCol =         ;Wks column containing the label (0-255)
+pSymCol =         ;Wks column containing the symbol code (0-255)
+pAngCol =         ;Wks column containing symbol angle (0-255)
+pZcol =           ;Wks column containing value to class (0-255)
+pHtCol =          ;Wks column containing height (0-255)
+pSym+ =           ;Symbol attributes
+pSymAng+ =        ;Symbol angle (degrees)
+pFont+ =          ;Font attributes
+pLabFmt+ =        ;Label format attributes
+pFreq+ =          ;Post frequency
+pPosType+ =       ;Label position (Center,Left,Right,Above,Below,User defined)
+pXpos+ =          ;Label offset from symbol (page units)
+pYpos+ =          ;Label offset from symbol (page units)
+pLabAng+ =        ;Label angle (degrees)
+p3Dlen+ =         ;3d label line length (page units)
+p3Dline+ =        ;3d label line attributes
+pSizeType+ =      ;Symbol size type (Fixed, Proportional)
+pScaleType+ =     ;Symbol scale type (Linear, Square root)
+pSymHt1+ =        ;Symbol height at min Z (page units)
+pSymHt2+ =        ;Symbol height at max Z (page units)
+pDatHt1 =         ;Min Z for symbol height
+pDatHt2 =         ;Max Z for symbol height
+pClassType+ =     ;Class method (equal Number, equal Interval, User defined)
+pNClass+ =        ;Number of classes
+pLegend+ =        ;Display legend (Y,N)
+
+;=========== Map Image ==========================
+imInGrd =         ;Input filename [.GRD]
+imClr+ =          ;Color file [.CLR]
+imInterp+ =       ;Interpolate pixels (Y,N)
+imDither+ =       ;Dither bitmap if possible (Y,N)
+imColorScl+ =     ;Display color scale (Y,N)
+
+;=========== Map Shaded Relief ==================
+rmInGrd =         ;Input filename [.GRD]
+rmClr+ =          ;Color file [.CLR]
+rmDither+ =       ;Dither bitmap if possible (Y,N)
+rmGradient+ =     ;Gradient method (Central difference, Local)
+rmShade+ =        ;Shade method (Simple,Peucker,Lambertian,lOmmel-seeliger)
+rmAzimuth+ =      ;Azimuth in degrees (CCW, 0=East)
+rmZenith+ =       ;Zenight angle in degrees (0=horiz, 90=vertical)
+rmZScale =        ;ZScale factor
+
+;=========== Map Surface ========================
+sInGrd =          ;Input grid file name [.GRD]
+sInLvl =          ;Default input LVL file [.LVL]
+sOutLvl =         ;Default output LVL file [.LVL]
+sInZone =         ;Default input color zone file [.LVL]
+sOutZone =        ;Default output color zone file [.LVL]
+sPlotX+ =         ;Plot lines parallel to X (Y,N)
+sPlotY+ =         ;Plot lines parallel to Y (Y,N)
+sPlotZ+ =         ;Plot lines parallel to Z (Y,N)
+sShowLow+ =       ;Show lower surface (Y,N)
+sShowUp+ =        ;Show upper surface (Y,N)
+sShowVert+ =      ;Show vertical base lines (Y,N)
+sShowBase+ =      ;Show base (Y,N)
+sRemHidden+ =     ;Remove hidden lines (Y,N)
+sXzoned+ =        ;Color X lines using color zones (Y,N)
+sYzoned+ =        ;Color Y lines using color zones (Y,N)
+sZzoned+ =        ;Color Z lines using color zones (Y,N)
+sColorScl+ =      ;Display a color scale (Y,N)
+sXline+ =         ;X line attributes
+sYline+ =         ;Y line attributes
+sZline+ =         ;Z line attributes
+sBaseLine+ =      ;Base line attributes
+sBorder+ =        ;Show border (None,All sides,Front only)
+sMinZoneLine+ =   ;Minimum color zone line attributes
+sMaxZoneLine+ =   ;Maximum color zone line attributes
+sMin =            ;Minimum Z contour level
+sMax =            ;Maximum Z contour level
+sInt =            ;Z contour interval
+sMinLevLine+ =    ;Minimum level line attributes
+sMaxLevLine+ =    ;Maximum level line attributes
+sBaseHt =         ;Elevation of bottom of surface base
+
+;=========== Map Left Axis ======================
+lxTitle =         ;Axis title
+lxTitFont =       ;Axis title font attributes
+lxTitX =          ;Axis title X offset (page units)
+lxTitY =          ;Axis title Y offset (page units)
+lxTitAng =        ;Axis title angle (degrees)
+lxLine =          ;Axis line attributes
+lxLabFont =       ;Axis label font attributes
+lxLabAng =        ;Axis label angle (degrees)
+lxLabDist =       ;Distance from axis to labels (page units)
+lxMinTT =         ;Minor tic type (None, Out, In, Cross)
+lxMinTL =         ;Minor tic length (page units)
+lxMajTT =         ;Major tic type (None, Out, In, Cross)
+lxMajTL =         ;Major tic length (page units)
+lxMinTF =         ;Minor tics per major -1
+lxMinGLine =      ;Minor grid line attributes
+lxMajGLine =      ;Major grid line attributes
+lxPlane =         ;Axis plane (Xy, Yz, xZ)
+lxLabFmt =        ;Axis label format attributes
+lxMinVal =        ;Scaling parameters
+lxMaxVal =        ;"
+lxCross1 =        ;"
+lxCross2 =        ;"
+lxMajInc =        ;"
+lxMinTic =        ;"
+lxMaxTic =        ;"
+lxShow =          ;Show axis (Y,N)
+lxShowLab =       ;Show labels (Y,N)
+lxShowMinG =      ;Show minor grid lines (Y,N)
+lxShowMajG =      ;Show major grid lines (Y,N)
+
+;=========== Map Right Axis =====================
+rxTitle =         ;Axis title
+rxTitFont =       ;Axis title font attributes
+rxTitX =          ;Axis title X offset (page units)
+rxTitY =          ;Axis title Y offset (page units)
+rxTitAng =        ;Axis title angle (degrees)
+rxLine =          ;Axis line attributes
+rxLabFont =       ;Axis label font attributes
+rxLabAng =        ;Axis label angle (degrees)
+rxLabDist =       ;Distance from axis to labels (page units)
+rxMinTT =         ;Minor tic type (None, Out, In, Cross)
+rxMinTL =         ;Minor tic length (page units)
+rxMajTT =         ;Major tic type (None, Out, In, Cross)
+rxMajTL =         ;Major tic length (page units)
+rxMinTF =         ;Minor tics per major -1
+rxMinGLine =      ;Minor grid line attributes
+rxMajGLine =      ;Major grid line attributes
+rxPlane =         ;Axis plane (Xy, Yz, xZ)
+rxLabFmt =        ;Axis label format attributes
+rxMinVal =        ;Scaling parameters
+rxMaxVal =        ;"
+rxCross1 =        ;"
+rxCross2 =        ;"
+rxMajInc =        ;"
+rxMinTic =        ;"
+rxMaxTic =        ;"
+rxShow =          ;Show axis (Y,N)
+rxShowLab =       ;Show labels (Y,N)
+rxShowMinG =      ;Show minor grid lines (Y,N)
+rxShowMajG =      ;Show major grid lines (Y,N)
+
+;=========== Map Bottom Axis ====================
+bxTitle =         ;Axis title
+bxTitFont =       ;Axis title font attributes
+bxTitX =          ;Axis title X offset (page units)
+bxTitY =          ;Axis title Y offset (page units)
+bxTitAng =        ;Axis title angle (degrees)
+bxLine =          ;Axis line attributes
+bxLabFont =       ;Axis label font attributes
+bxLabAng =        ;Axis label angle (degrees)
+bxLabDist =       ;Distance from axis to labels (page units)
+bxMinTT =         ;Minor tic type (None, Out, In, Cross)
+bxMinTL =         ;Minor tic length (page units)
+bxMajTT =         ;Major tic type (None, Out, In, Cross)
+bxMajTL =         ;Major tic length (page units)
+bxMinTF =         ;Minor tics per major -1
+bxMinGLine =      ;Minor grid line attributes
+bxMajGLine =      ;Major grid line attributes
+bxPlane =         ;Axis plane (Xy, Yz, xZ)
+bxLabFmt =        ;Axis label format attributes
+bxMinVal =        ;Scaling parameters
+bxMaxVal =        ;"
+bxCross1 =        ;"
+bxCross2 =        ;"
+bxMajInc =        ;"
+bxMinTic =        ;"
+bxMaxTic =        ;"
+bxShow =          ;Show axis (Y,N)
+bxShowLab =       ;Show labels (Y,N)
+bxShowMinG =      ;Show minor grid lines (Y,N)
+bxShowMajG =      ;Show major grid lines (Y,N)
+
+;=========== Map Top Axis =======================
+txTitle =         ;Axis title
+txTitFont =       ;Axis title font attributes
+txTitX =          ;Axis title X offset (page units)
+txTitY =          ;Axis title Y offset (page units)
+txTitAng =        ;Axis title angle (degrees)
+txLine =          ;Axis line attributes
+txLabFont =       ;Axis label font attributes
+txLabAng =        ;Axis label angle (degrees)
+txLabDist =       ;Distance from axis to labels (page units)
+txMinTT =         ;Minor tic type (None, Out, In, Cross)
+txMinTL =         ;Minor tic length (page units)
+txMajTT =         ;Major tic type (None, Out, In, Cross)
+txMajTL =         ;Major tic length (page units)
+txMinTF =         ;Minor tics per major -1
+txMinGLine =      ;Minor grid line attributes
+txMajGLine =      ;Major grid line attributes
+txPlane =         ;Axis plane (Xy, Yz, xZ)
+txLabFmt =        ;Axis label format attributes
+txMinVal =        ;Scaling parameters
+txMaxVal =        ;"
+txCross1 =        ;"
+txCross2 =        ;"
+txMajInc =        ;"
+txMinTic =        ;"
+txMaxTic =        ;"
+txShow =          ;Show axis (Y,N)
+txShowLab =       ;Show labels (Y,N)
+txShowMinG =      ;Show minor grid lines (Y,N)
+txShowMajG =      ;Show major grid lines (Y,N)
+
+;=========== Map Z Axis =========================
+zxTitle =         ;Axis title
+zxTitFont =       ;Axis title font attributes
+zxTitX =          ;Axis title X offset (page units)
+zxTitY =          ;Axis title Y offset (page units)
+zxTitAng =        ;Axis title angle (degrees)
+zxLine =          ;Axis line attributes
+zxLabFont =       ;Axis label font attributes
+zxLabAng =        ;Axis label angle (degrees)
+zxLabDist =       ;Distance from axis to labels (page units)
+zxMinTT =         ;Minor tic type (None, Out, In, Cross)
+zxMinTL =         ;Minor tic length (page units)
+zxMajTT =         ;Major tic type (None, Out, In, Cross)
+zxMajTL =         ;Major tic length (page units)
+zxMinTF =         ;Minor tics per major -1
+zxMinGLine =      ;Minor grid line attributes
+zxMajGLine =      ;Major grid line attributes
+zxPlane =         ;Axis plane (Xy, Yz, xZ)
+zxLabFmt =        ;Axis label format attributes
+zxMinVal =        ;Scaling parameters
+zxMaxVal =        ;"
+zxCross1 =        ;"
+zxCross2 =        ;"
+zxMajInc =        ;"
+zxMinTic =        ;"
+zxMaxTic =        ;"
+zxShow =          ;Show axis (Y,N)
+zxShowLab =       ;Show labels (Y,N)
+zxShowMinG =      ;Show minor grid lines (Y,N)
+zxShowMajG =      ;Show major grid lines (Y,N)
+
+;=========== Map Scale Bar ======================
+sbLabAng+ =       ;Label angle (degrees)
+sbDir =           ;Axis to track (X axis, Y axis, Z axis)
+sbLine+ =         ;Line attributes
+sbFont+ =         ;Font attributes
+sbCycleSp+ =      ;Cycle spacing (data units)
+sbLabInc+ =       ;Label increment (arbitrary units)
+sbLabFmt+ =       ;Label format attributes
+sbNCycle+ =       ;Number of cycles
+
+;=========== Map Background =====================
+MapLine =         ;Map border line attributes
+MapFill =         ;Map background fill attributes
+
+;=========== Map 3D View ========================
+MapRot =          ;Map rotation (degrees)
+MapTilt =         ;Map tilt (degrees)
+MapDist =         ;Map perspective distance (%)
+MapProj =         ;Map projection (Perspective,Orthographic)
+
+;=========== Map Scale ==========================
+xDatPerPU =       ;Map X scale (data units per page unit)
+yDatPerPU =       ;Map Y scale (data units per page unit)
+zDatPerPU =       ;Map Z scale (data units per page unit)
+xLen =            ;Map X length (in page units)
+yLen =            ;Map Y length (in page units)
+zLen =            ;Map Z length (in page units)
+
+;=========== Map Limits =========================
+xMinLim =         ;Map limit (left)
+xMaxLim =         ;Map limit (right)
+yMinLim =         ;Map limit (bottom)
+yMaxLim =         ;Map limit (top)
+
+;=========== Legend ==============================
+lReverse+ =       ;Reverse order of legend items (Y,N)
+lFrame+ =         ;Frame type (None, Rectangle rOund rect)
+lFrameLine+ =     ;Frame line attributes
+lFrameFill+ =     ;Frame fill attributes
+lMargin+ =        ;Margin (in page units)
+lTitFont+ =       ;Title font attributes
+lTitle+ =         ;Legend title
+lTextFont+ =      ;Legend item font
+lTemplate+ =      ;Legend item template
+lNumFmt+ =        ;Numeric format attributes
+
+;=========== Color Scale ========================
+csLine+ =         ;Line attributes
+csFont+ =         ;Font attributes
+csLabFmt+ =       ;Label format attributes
+csLabAngle+ =     ;Label angle (in degrees)
+csLabBeg =        ;Index of first label
+csLabFreq =       ;Label frequency
+csLabMin =        ;Minimum label value
+csLabMax =        ;Maximum label value
+csLabInt =        ;Label interval
+
+;=========== Misc ===============================
+txtInTxt =        ;Input text file for editor documents

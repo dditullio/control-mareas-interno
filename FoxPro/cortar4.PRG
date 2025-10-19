@@ -1,0 +1,102 @@
+
+CLOSE all
+SET DATE french
+
+CLEAR
+*c
+COPY FILE c7821.dbf TO c7821a.dbf
+COPY FILE c7821.dbf TO c7821b.dbf
+COPY FILE c7821.dbf TO c7821c.dbf
+COPY FILE c7821.dbf TO c7821d.dbf
+
+
+*m
+COPY FILE m7821.dbf TO m7821a.dbf
+COPY FILE m7821.dbf TO m7821b.dbf
+COPY FILE m7821.dbf TO m7821c.dbf
+COPY FILE m7821.dbf TO m7821d.dbf
+
+
+
+*md
+*COPY FILE md7821.dbf TO md7821a.dbf
+*COPY FILE md7821.dbf TO md7821b.dbf
+*COPY FILE md7821.dbf TO md7821c.dbf
+*COPY FILE md7821.dbf TO md7821d.dbf
+
+*p
+COPY FILE p7821.dbf TO p7821a.dbf
+COPY FILE p7821.dbf TO p7821b.dbf
+COPY FILE p7821.dbf TO p7821c.dbf
+COPY FILE p7821.dbf TO p7821d.dbf
+
+
+
+
+***c
+uSE c7821a
+dELETE ALL FOR fecha>CTOD("01/06/21")
+pACK
+
+USE c7821b
+DELETE ALL FOR fecha<CTOD("16/06/21") .or.fecha>CTOD("24/06/21")
+PACK
+
+USE c7821c
+DELETE ALL FOR fecha<CTOD("26/06/21") .or.fecha>CTOD("02/07/21")
+PACK
+
+uSE c7821d
+dELETE ALL FOR fecha<CTOD("03/07/21")
+pACK
+
+
+
+****m
+
+uSE m7821a
+dELETE ALL FOR fecha>CTOD("01/06/21")
+pACK
+
+USE m7821b
+DELETE ALL FOR fecha<CTOD("16/06/21") .or.fecha>CTOD("24/06/21")
+PACK
+
+USE m7821c
+DELETE ALL FOR fecha<CTOD("26/06/21") .or.fecha>CTOD("02/07/21")
+PACK
+
+uSE m7821d
+dELETE ALL FOR fecha<CTOD("03/07/21")
+pACK
+
+
+
+*****md
+
+
+
+
+***p
+
+uSE p7821a
+dELETE ALL FOR fecha>CTOD("01/06/21")
+pACK
+
+USE p7821b
+DELETE ALL FOR fecha<CTOD("16/06/21") .or.fecha>CTOD("24/06/21")
+PACK
+
+USE p7821c
+DELETE ALL FOR fecha<CTOD("26/06/21") .or.fecha>CTOD("02/07/21")
+PACK
+
+uSE p7821d
+dELETE ALL FOR fecha<CTOD("03/07/21")
+pACK
+
+
+
+
+
+CLOSE all

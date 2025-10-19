@@ -1,0 +1,6 @@
+
+Especie  ; Producto  ; Categoría ; Kilos ; Factor
+
+
+Factor en cero
+Total Producción          0

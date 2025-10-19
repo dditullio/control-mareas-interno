@@ -1,0 +1,16 @@
+
+Especie  ; Kilos ; Descarte  ; Desc.%   ; Lances  ; Dias ; Horas 
+Scomber colias                     ;     225800,00 ;          0,00 ;   0,00 ;          8 ;          2 ;       6,55
+ Trachurus sp.                     ;        800,00 ;        800,00 ; 100,00  ;          7 ;          2 ;       6,35
+
+ ;     226600,00 ;        800,00 ;          0,3530 ;          8 ;          2
+
+
+
+
+Datos de captura y esfuerzo por area
+
+Area  ; Kilos ; Descarte  ; Desc%   ; Lances  ; Días ; Horas 
+      4060 ;     226600,00 ;        800,00 ;   0,35 ;          8 ;          5 ;       6,55
+
+                                     226600,00        800,00          0,3530          8         

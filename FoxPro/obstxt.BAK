@@ -1,0 +1,138 @@
+CLOSE all
+set century on
+*SCROLL
+clear
+on error do zz
+clear
+set color to  ("R/w*")
+@ 0,1 say "CONTROL DE CARPETAS - PROYECTO OBSERVADORES "
+set color to  ("N/w*")
+do while .t.
+clear
+set color to  ("R/w*")
+@ 0,1 say "CONTROL DE CARPETAS - PROYECTO OBSERVADORES "
+set color to  ("N/w*")
+
+  @3,35 say "MAREAS"
+  set color to  ("r+/w*")
+  @5,25 prompt "1- Control Dias horas Arrastrero (arrdiashoras.txt)"
+  set color to  ("R+/w*")
+  @6,25 prompt "2- Control Días horas Palangreros (paldiashoras.txt)"
+  set color to  ("N/w*")
+  @8,25 prompt "3- Posiciones con una especie palangrero (palposiciones.txt)"
+  @9,25 prompt "4- Posiciones con una especie arrastreros (Arrposiciones.txt)"
+  @10,25 prompt "5- Posiciones varias especies arrastreros (Varposiciones.txt)"
+  @11,25 prompt "6- Posiciones varias especies palangreros (Varpalpos.txt)"
+  @13,25 prompt "7- Largo peso" 
+  @14,25 prompt "8- Resumen produccion (produccion.txt)"
+  @15,25 prompt "9- Controla especies respecto a base nueva (especies.txt)"
+  @16,25 prompt "10- Especies viejas que aparecen con otra especie de la base nueva"
+  @17,25 prompt "10- Especies que cambiaron de códigos"
+  @18,25 prompt "12- Reemplaza especies"
+  @19,25 prompt "13- Ver base de especies Vieja"
+  @20,25 prompt "14- Ver base de especies Nueva"
+  @21,25 prompt "15- Pasar descarte a captura"  
+  @22,25 prompt "16- Controla archivo L"  
+  @23,25 prompt "17- Resumen muestra/maduros"
+  @24,25 prompt "18- ERRORES"
+  @25,25 prompt "19- PRODUCCION ANTERIOR"
+  @27,25 prompt "20- Salir"
+  
+  menu to option
+  if lastkey()=27
+    exit
+  endif
+
+  do case  
+   case option=1
+   clear
+   do OBShar
+   
+   case option=2
+   clear
+   do OBShpa
+
+
+   case option=3
+   clear
+   do OBSpospal
+
+   case option=4
+   clear
+   do OBSposarr
+   
+   case option=5
+   clear
+   do OBSposvar
+
+   case option=6
+   clear
+   do OBSpalvar
+
+   case option=7
+   clear
+   do OBSpm
+
+   case option=8
+   clear
+   do OBSpro2
+
+   case option=9
+   CLEAR
+   DO OBSver
+   
+   case option=10
+   CLEAR
+   DO OBScamnum
+   
+   case option=12
+   CLEAR
+   DO OBSreem
+   
+   case option=13
+   CLEAR
+   USE especievie
+   brow
+   
+   case option=14
+   CLEAR
+   USE especie1
+   brow
+
+   case option=15
+   CLEAR
+   DO pasdescap
+
+   case option=16
+   CLEAR
+   do ctrL
+
+   case option=17
+   CLEAR
+   do ctrLl
+
+      
+   case option=18
+   CLEAR
+   do obserr
+
+   case option=19
+   CLEAR
+   do obspro
+
+   case option=20
+   CLEAR
+   exit
+
+
+  endcase
+enddo
+
+
+procedure zz
+@ 0,0 CLEAR
+@12,25 SAY "Error de procesamiento. Estadio no considerado. -aguarde"
+for t=1 to 10000000
+next t
+quit
+clear

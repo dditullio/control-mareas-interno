@@ -1,0 +1,24 @@
+
+Especie  ; Kilos ; Descarte  ; Desc.%   ; Lances  ; Dias ; Horas 
+Dorytheuthis                       ;         20,00 ;         20,00 ; 100,00  ;          1 ;          1 ;       1,14
+Mustelus schmitti                  ;         70,00 ;         30,00 ;  42,86 ;          2 ;          2 ;       2,25
+Callorhinchus callorynchus         ;        710,00 ;         20,00 ;   2,82 ;          6 ;          2 ;       8,14
+Acanthistius patachonicus          ;        230,00 ;         70,00 ;  30,43 ;          7 ;          2 ;       9,24
+Pagrus pagrus                      ;         60,00 ;         60,00 ; 100,00  ;          3 ;          1 ;       4,30
+Scomber colias                     ;     143800,00 ;          0,00 ;   0,00 ;          7 ;          2 ;       9,24
+Seriolella porosa                  ;         20,00 ;         20,00 ; 100,00  ;          1 ;          1 ;       1,20
+ Trachurus sp.                     ;       1200,00 ;       1200,00 ; 100,00  ;          7 ;          2 ;       9,24
+ Hexanchus sp                      ;         60,00 ;         20,00 ;  33,33 ;          2 ;          2 ;       2,25
+
+ ;     146170,00 ;       1440,00 ;          0,9852 ;          7 ;          2
+
+
+
+
+Datos de captura y esfuerzo por area
+
+Area  ; Kilos ; Descarte  ; Desc%   ; Lances  ; Días ; Horas 
+      3960 ;      20880,00 ;        480,00 ;   2,30 ;          2 ;          1 ;       2,30
+      4060 ;     125290,00 ;        960,00 ;   0,77 ;          5 ;          1 ;       6,54
+
+                                     146170,00       1440,00          0,9852          7         

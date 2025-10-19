@@ -1,0 +1,128 @@
+
+CLOSE all
+SET DATE french
+
+*c
+COPY FILE c9721.dbf TO c9721a.dbf
+COPY FILE c9721.dbf TO c9721b.dbf
+COPY FILE c9721.dbf TO c9721c.dbf
+COPY FILE c9721.dbf TO c9721d.dbf
+COPY FILE c9721.dbf TO c9721e.dbf
+COPY FILE c9721.dbf TO c9721f.dbf
+
+*m
+COPY FILE m9721.dbf TO m9721a.dbf
+COPY FILE m9721.dbf TO m9721b.dbf
+COPY FILE m9721.dbf TO m9721c.dbf
+COPY FILE m9721.dbf TO m9721d.dbf
+COPY FILE m9721.dbf TO m9721e.dbf
+COPY FILE M9721.dbf TO m9721f.dbf
+
+*md
+*COPY FILE md9721.dbf TO md9721a.dbf
+*COPY FILE md9721.dbf TO md9721b.dbf
+*COPY FILE md9721.dbf TO md9721c.dbf
+*COPY FILE md9721.dbf TO md9721d.dbf
+*COPY FILE md9721.dbf TO md9721e.dbf
+
+*p
+COPY FILE p9721.dbf TO p9721a.dbf
+COPY FILE p9721.dbf TO p9721b.dbf
+COPY FILE p9721.dbf TO p9721c.dbf
+COPY FILE p9721.dbf TO p9721d.dbf
+COPY FILE p9721.dbf TO p9721e.dbf
+COPY FILE p9721.dbf TO p9721f.dbf
+
+
+***c
+uSE c9721a
+dELETE ALL FOR fecha>CTOD("09/07/21")
+pACK
+
+USE c9721b
+DELETE ALL FOR fecha<CTOD("10/07/21") .or.fecha>CTOD("13/07/21")
+PACK
+
+USE c9721c
+DELETE ALL FOR fecha<CTOD("14/07/21") .or.fecha>CTOD("17/07/21")
+PACK
+
+USE c9721d
+DELETE ALL FOR fecha<CTOD("18/07/21") .or.fecha>CTOD("24/07/21")
+PACK
+
+USE c9721e
+DELETE ALL FOR fecha<CTOD("25/07/21") .or.fecha>CTOD("03/08/21")
+PACK
+
+
+uSE c9721f
+dELETE ALL FOR fecha<CTOD("03/08/21")
+pACK
+
+
+
+****m
+
+uSE md9721a
+dELETE ALL FOR fecha>CTOD("09/07/21")
+pACK
+
+USE md9721b
+DELETE ALL FOR fecha<CTOD("10/07/21") .or.fecha>CTOD("13/07/21")
+PACK
+
+USE md9721c
+DELETE ALL FOR fecha<CTOD("14/07/21") .or.fecha>CTOD("17/07/21")
+PACK
+
+USE md9721d
+DELETE ALL FOR fecha<CTOD("18/07/21") .or.fecha>CTOD("24/07/21")
+PACK
+
+uSE md9721e
+DELETE ALL FOR fecha<CTOD("25/07/21") .or.fecha>CTOD("03/08/21")
+PACK
+
+uSE md9721f
+dELETE ALL FOR fecha<CTOD("03/08/21")
+pACK
+
+
+
+*****md
+
+
+
+
+***p
+
+uSE p9721a
+dELETE ALL FOR fecha>CTOD("09/07/21")
+pACK
+
+USE p9721b
+DELETE ALL FOR fecha<CTOD("10/07/21") .or.fecha>CTOD("13/07/21")
+PACK
+
+USE p9721c
+DELETE ALL FOR fecha<CTOD("14/07/21") .or.fecha>CTOD("17/07/21")
+PACK
+
+USE p9721d
+DELETE ALL FOR fecha<CTOD("18/07/21") .or.fecha>CTOD("24/07/21")
+PACK
+
+uSE p9721e
+DELETE ALL FOR fecha<CTOD("25/07/21") .or.fecha>CTOD("03/08/21")
+PACK
+
+uSE p9721f
+dELETE ALL FOR fecha<CTOD("03/08/21")
+pACK
+
+
+
+
+
+CLOSE all

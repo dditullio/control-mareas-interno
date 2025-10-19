@@ -1,0 +1,2 @@
+
+Especie  ; Producto  ; Categoría ; Kilos ; Factor

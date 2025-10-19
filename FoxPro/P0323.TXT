@@ -1,0 +1,18 @@
+
+Especie  ; Producto  ; Categoría ; Kilos ; Factor
+Genypterus blacodes                ; S/CAB,S/VISC (HYG)         ;     ;       4823,00 ;          1,81
+Salilota australis                 ; S/CAB,S/VISC (HYG)         ;     ;         17,00 ;          1,73
+Sebastes oculatus                  ; ENTERO                    ;     ;         10,00 ;          1,00
+Sebastes oculatus                  ; S/CAB,S/VISC (HYG)         ;     ;        277,00 ;          1,73
+Illex argentinus                   ; ENTERO                    ;     ;     487698,00 ;          1,00
+Merluccius hubbsi                  ; CHORIZO                   ;     ;       9690,00 ;          3,59
+Merluccius hubbsi                  ; FILET                     ;     ;        168,00 ;          3,59
+Merluccius hubbsi                  ; FILET S/P,S/E,S/G,S/P      ;     ;      31514,00 ;          3,59
+Merluccius hubbsi                  ; FILET S/PIEL,S/GRASA        ;     ;      14041,00 ;          3,59
+Merluccius hubbsi                  ; S/CAB,S/COLA (TRONCO)         ;     ;       2967,00 ;          2,09
+Merluccius hubbsi                  ; S/CAB,S/VISC (HYG)         ;     ;      94512,20 ;          2,09
+Stromateus brasiliensis            ; ENTERO                    ;     ;         69,40 ;          1,00
+
+
+Factor en cero
+Total Producción     645786,60

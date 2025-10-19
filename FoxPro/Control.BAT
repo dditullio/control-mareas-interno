@@ -1,0 +1,3 @@
+SET CLIPPER=//F35
+ctrol.EXE
+ 

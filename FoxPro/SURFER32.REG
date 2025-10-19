@@ -1,0 +1,18 @@
+REGEDIT
+
+HKEY_CLASSES_ROOT\.srf = Surfer
+HKEY_CLASSES_ROOT\Surfer = Surfer Drawing
+HKEY_CLASSES_ROOT\Surfer\shell\print\command = C:\SURFER6\surfer32.exe /p %1
+HKEY_CLASSES_ROOT\Surfer\shell\open\command = C:\SURFER6\surfer32.exe %1
+
+HKEY_CLASSES_ROOT\Surfer.App = Surfer Macro Interface
+HKEY_CLASSES_ROOT\Surfer.App\Clsid = {54C3F9A1-980B-1068-83F9-0000C02A351C}
+
+;This appears to users in dialogs, such as the Insert Object dialog
+HKEY_CLASSES_ROOT\CLSID\{54C3F9A1-980B-1068-83F9-0000C02A351C} = Surfer Macro Interface
+
+;Used by programmers to access the type info
+HKEY_CLASSES_ROOT\CLSID\{54C3F9A1-980B-1068-83F9-0000C02A351C}\ProgID = Surfer.App
+
+;Can contain the optional string "/Automation" after the path...
+HKEY_CLASSES_ROOT\CLSID\{54C3F9A1-980B-1068-83F9-0000C02A351C}\LocalServer32 = C:\SURFER6\surfer32.exe /Automation

@@ -1,0 +1,50 @@
+
+QWidget {
+    background-color: #2E2E2E;
+    color: #FFFFFF;
+    font-size: 14px;
+}
+QMainWindow {
+    background-color: #212121;
+}
+QGroupBox {
+    font-weight: bold;
+    border: 1px solid #424242;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 10px;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+    background-color: #2E2E2E;
+    border-radius: 4px;
+}
+QLabel {
+    font-weight: bold;
+}
+QLineEdit, QComboBox, QListWidget {
+    background-color: #424242;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    padding: 5px;
+}
+QLineEdit:focus, QComboBox:focus, QListWidget:focus {
+    border: 1px solid #BB86FC;
+}
+QPushButton {
+    background-color: #6200EE;
+    color: #FFFFFF;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    min-height: 20px;
+}
+QPushButton:hover {
+    background-color: #7F39FB;
+}
+QPushButton:pressed {
+    background-color: #3700B3;
+}

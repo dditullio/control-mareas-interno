@@ -1,0 +1,72 @@
+
+CLOSE all
+SET DATE french
+
+*c
+COPY FILE c10421.dbf TO c10421a.dbf
+COPY FILE c10421.dbf TO c10421b.dbf
+
+
+
+
+*m
+COPY FILE m10421.dbf TO m10421a.dbf
+
+
+*md
+*COPY FILE md10421.dbf TO md10421a.dbf
+*COPY FILE md10421.dbf TO md10421b.dbf
+
+
+*p
+COPY FILE p10421.dbf TO p10421a.dbf
+COPY FILE p10421.dbf TO p10421b.dbf
+
+
+
+
+
+
+***c
+uSE c10421a
+dELETE ALL FOR fecha>CTOD("26/07/21")
+pACK
+
+uSE c10421b
+dELETE ALL FOR fecha<CTOD("27/07/21")
+pACK
+
+
+
+****m
+
+uSE m10421a
+dELETE ALL FOR fecha>CTOD("26/07/21")
+pACK
+
+USE m10421b
+dELETE ALL FOR fecha<CTOD("27/07/21")
+pACK
+
+
+
+*****md
+
+
+
+
+***p
+
+uSE p10421a
+dELETE ALL FOR fecha>CTOD("26/07/21")
+pACK
+
+USE p10421b
+dELETE ALL FOR fecha<CTOD("27/07/21")
+pACK
+
+
+
+
+
+CLOSE all

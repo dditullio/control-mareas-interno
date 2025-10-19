@@ -1,0 +1,31 @@
+
+Especie  ; Producto  ; Categoría ; Kilos ; Factor
+Caballa                   ; ENTERO                    ;     ;     861360,00 ;          0,00
+Mustelus schmitti                  ; ENTERO                    ;     ;        160,00 ;          0,00
+Acanthistius patachonicus          ; ENTERO                    ;     ;        160,00 ;          0,00
+Callorhinchus callorynchus         ; ENTERO                    ;     ;       1160,00 ;          0,00
+Salmon de mar             ; ENTERO                    ;     ;        120,00 ;          0,00
+Tiburon                   ; ENTERO                    ;     ;         40,00 ;          0,00
+
+
+Factor en cero
+Caballa                   ; ENTERO                    ;  152670,00 ; 08/29/1922 
+Caballa                   ; ENTERO                    ;   21665,00 ; 09/02/1922 
+Caballa                   ; ENTERO                    ;  129185,00 ; 09/03/1922 
+Caballa                   ; ENTERO                    ;   85575,00 ; 09/07/1922 
+Caballa                   ; ENTERO                    ;   49500,00 ; 09/08/1922 
+Caballa                   ; ENTERO                    ;  151865,00 ; 09/12/1922 
+Caballa                   ; ENTERO                    ;   59150,00 ; 09/16/1922 
+Caballa                   ; ENTERO                    ;   90930,00 ; 09/17/1922 
+Caballa                   ; ENTERO                    ;   11270,00 ; 09/21/1922 
+Caballa                   ; ENTERO                    ;  109550,00 ; 09/22/1922 
+Gatuzo                    ; ENTERO                    ;    120,00 ; 09/22/1922 
+Gatuzo                    ; ENTERO                    ;     40,00 ; 09/22/1922 
+Mero                      ; ENTERO                    ;     80,00 ; 09/22/1922 
+Mero                      ; ENTERO                    ;     80,00 ; 09/17/1922 
+Pez gallo                 ; ENTERO                    ;    600,00 ; 09/22/1922 
+Pez gallo                 ; ENTERO                    ;    360,00 ; 09/17/1922 
+Pez gallo                 ; ENTERO                    ;    200,00 ; 09/16/1922 
+Salmon de mar             ; ENTERO                    ;    120,00 ; 09/17/1922 
+Tiburon                   ; ENTERO                    ;     40,00 ; 09/22/1922 
+Total Producción     863000,00

@@ -1,0 +1,64 @@
+
+Especie  ; Kilos ; Descarte  ; Desc.%   ; Lances  ; Dias ; Horas 
+Porifera                           ;       3058,00 ;       3058,00 ; 100,00  ;         56 ;         11 ;      69,12
+Renillidae                         ;        155,00 ;        155,00 ; 100,00  ;          2 ;          1 ;       2,20
+Aciculata                          ;       1140,00 ;       1140,00 ; 100,00  ;         22 ;          5 ;      26,02
+Pleoticus muelleri                 ;     293510,00 ;      16528,00 ;   5,63 ;        127 ;         26 ;     151,55
+Lithodes santolla                  ;         15,00 ;         15,00 ; 100,00  ;         13 ;          4 ;      15,32
+Munida                             ;         20,00 ;         20,00 ; 100,00  ;         20 ;          6 ;      23,25
+Euripodius latreillei              ;        145,00 ;        145,00 ; 100,00  ;         74 ;         19 ;      88,37
+Libinia spinosa                    ;         13,00 ;         13,00 ; 100,00  ;          7 ;          2 ;      11,05
+Peltarion                          ;        180,00 ;        180,00 ; 100,00  ;         26 ;          8 ;      32,38
+Cangrejo                           ;        430,00 ;        430,00 ; 100,00  ;          6 ;          3 ;       7,51
+Pelecypoda                         ;       4085,00 ;       4085,00 ; 100,00  ;         35 ;          8 ;      46,58
+Zygochlamys patagonica             ;        298,00 ;        298,00 ; 100,00  ;         56 ;         11 ;      67,51
+Dorytheuthis  gahi                 ;        199,00 ;        199,00 ; 100,00  ;         73 ;         17 ;      89,41
+Illex argentinus                   ;        192,00 ;        192,00 ; 100,00  ;         65 ;         15 ;      72,39
+Odontasteridae                     ;        186,00 ;        186,00 ; 100,00  ;         27 ;          8 ;      32,48
+Gorgonocephalidae                  ;        755,00 ;        755,00 ; 100,00  ;         23 ;          6 ;      27,13
+Ascidiacea                         ;        505,00 ;        505,00 ; 100,00  ;         16 ;          3 ;      21,40
+Squalus acanthias                  ;         78,00 ;         78,00 ; 100,00  ;         23 ;          9 ;      31,36
+Schroederichthys bivius            ;        167,00 ;        167,00 ; 100,00  ;         75 ;         15 ;      91,33
+Mustelus schmitti                  ;         61,00 ;         61,00 ; 100,00  ;         12 ;          5 ;      13,40
+Squatina sp.                       ;         21,00 ;         21,00 ; 100,00  ;          5 ;          2 ;       5,56
+Zearaja brevicaudata               ;         14,00 ;         14,00 ; 100,00  ;          5 ;          4 ;       6,24
+Bathyraja brachyurops              ;         11,00 ;         11,00 ; 100,00  ;          4 ;          2 ;       4,55
+Psammobatis sp                     ;         28,00 ;         28,00 ; 100,00  ;         26 ;         13 ;      31,24
+Discopyge tschudii                 ;        329,00 ;        329,00 ; 100,00  ;         22 ;          7 ;      27,07
+Callorhinchus callorynchus         ;         36,00 ;         36,00 ; 100,00  ;         17 ;          6 ;      19,43
+Engraulis anchoita                 ;        922,00 ;        922,00 ; 100,00  ;         33 ;          7 ;      37,33
+Merluccius hubbsi                  ;      54599,00 ;      54599,00 ; 100,00  ;        123 ;         26 ;     147,01
+Prionotus nudigula                 ;        845,00 ;        845,00 ; 100,00  ;         19 ;          6 ;      22,54
+Congiopodus peruvianus             ;        325,00 ;        325,00 ; 100,00  ;        104 ;         22 ;     123,40
+Acanthistius patachonicus          ;         63,00 ;         63,00 ; 100,00  ;         13 ;          7 ;      16,47
+Dules auriga                       ;          4,00 ;          4,00 ; 100,00  ;          2 ;          1 ;       2,59
+Trachurus lathami                  ;       3275,00 ;       3275,00 ; 100,00  ;         16 ;          5 ;      20,46
+Mullus argentinae                  ;         37,00 ;         37,00 ; 100,00  ;         17 ;          6 ;      17,52
+Nemadactylus bergi                 ;        368,00 ;        368,00 ; 100,00  ;         30 ;          6 ;      31,41
+Pseudopercis semifasciata          ;        108,00 ;        108,00 ; 100,00  ;         12 ;          4 ;      14,07
+Percophis brasiliensis             ;         69,00 ;         69,00 ; 100,00  ;         27 ;          9 ;      34,08
+Nototheniidae                      ;       5641,00 ;       5641,00 ; 100,00  ;        105 ;         21 ;     126,54
+Scomber colias                     ;          2,00 ;          2,00 ; 100,00  ;          1 ;          1 ;       1,43
+Stromateus brasiliensis            ;        319,00 ;        319,00 ; 100,00  ;         68 ;         19 ;      81,37
+Polyprion americanus               ;          4,00 ;          4,00 ; 100,00  ;          2 ;          2 ;       2,11
+Xystreurys rasile                  ;       3608,00 ;       3608,00 ; 100,00  ;        119 ;         26 ;     140,01
+Genypterus blacodes                ;          3,00 ;          3,00 ; 100,00  ;          3 ;          3 ;       3,46
+
+ ;     375823,00 ;      98841,00 ;         26,2999 ;        141 ;         28
+
+
+
+
+Datos de captura y esfuerzo por area
+
+Area  ; Kilos ; Descarte  ; Desc%   ; Lances  ; Días ; Horas 
+      4060 ;          0,00 ;          0,00 ; ****** ;          1 ;          1 ;       0,27
+      4061 ;          0,00 ;          0,00 ; ****** ;          1 ;          1 ;       0,48
+      4160 ;       1526,00 ;        988,00 ;  64,74 ;          2 ;          1 ;       2,39
+      4161 ;      16886,00 ;       6594,00 ;  39,05 ;         18 ;          5 ;      24,45
+      4261 ;      90804,00 ;      17533,00 ;  19,31 ;         35 ;          7 ;      39,59
+      4361 ;      41230,00 ;       6696,00 ;  16,24 ;          9 ;          2 ;       9,06
+      4362 ;     173107,00 ;      41375,00 ;  23,90 ;         52 ;         10 ;      60,30
+      4563 ;      52270,00 ;      25655,00 ;  49,08 ;         23 ;          4 ;      30,35
+
+                                     375823,00      98841,00         26,2999        141         
