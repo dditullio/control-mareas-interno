@@ -1,18 +1,19 @@
 
 import os
 import sys
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QEvent, QDate
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QGroupBox, QLabel, QLineEdit, QComboBox, QPushButton, QListWidget,
-    QFormLayout, QListWidgetItem
+    QFormLayout, QListWidgetItem, QDateEdit, QMessageBox
 )
 
 # Ajustar la ruta para importar desde las carpetas de la arquitectura
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from infrastructure.repositories import CatalogRepository
-from domain.entities import Especie, Buque, Observador
+from presentation.stage_list_item_widget import StageListItemWidget
+from domain.entities import Especie
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -62,11 +63,25 @@ class MainWindow(QMainWindow):
 
         etapas_group = QGroupBox("Etapas de Marea")
         etapas_v_layout = QVBoxLayout()
-        self.etapa_search = QLineEdit()
-        self.etapa_search.setPlaceholderText("Buscar etapa...")
+        
+        # Layout para los campos de fecha
+        fechas_layout = QHBoxLayout()
+        self.etapa_start_date = QDateEdit(calendarPopup=True)
+        self.etapa_start_date.setDisplayFormat("yyyy-MM-dd")
+        self.etapa_start_date.setDate(QDate.currentDate())
+        self.etapa_end_date = QDateEdit(calendarPopup=True)
+        self.etapa_end_date.setDisplayFormat("yyyy-MM-dd")
+        self.etapa_end_date.setDate(QDate.currentDate())
+        fechas_layout.addWidget(QLabel("Fecha Inicial:"))
+        fechas_layout.addWidget(self.etapa_start_date)
+        fechas_layout.addWidget(QLabel("Fecha Final:"))
+        fechas_layout.addWidget(self.etapa_end_date)
+
         self.etapas_list = QListWidget()
         self.add_etapa_btn = QPushButton("Agregar Etapa")
-        etapas_v_layout.addWidget(self.etapa_search)
+        self.add_etapa_btn.clicked.connect(self._add_trip_stage)
+
+        etapas_v_layout.addLayout(fechas_layout)
         etapas_v_layout.addWidget(self.etapas_list)
         etapas_v_layout.addWidget(self.add_etapa_btn)
         etapas_group.setLayout(etapas_v_layout)
@@ -112,6 +127,7 @@ class MainWindow(QMainWindow):
         procesos_group.setLayout(procesos_layout)
         main_layout.addWidget(procesos_group)
 
+        self._setup_enter_navigation()
     def _load_catalogs(self):
         """Carga los datos de los catálogos en los ComboBox."""
         foxpro_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'FoxPro'))
@@ -151,3 +167,87 @@ class MainWindow(QMainWindow):
         list_item = QListWidgetItem(specie.display_name)
         list_item.setData(Qt.UserRole, specie)
         self.especies_list.addItem(list_item)
+
+    def eventFilter(self, watched, event):
+        """Filtro de eventos para manejar la tecla Enter como Tab."""
+        if event.type() == QEvent.KeyPress and event.key() in (Qt.Key_Enter, Qt.Key_Return):
+            # Mapeo del siguiente widget en el orden de tabulación
+            next_widget_map = {
+                self.num_marea: self.anio_marea,
+                self.anio_marea: self.observador_combo,
+                self.observador_combo: self.buque_combo,
+                self.buque_combo: self.etapa_start_date,
+                self.etapa_start_date: self.etapa_end_date,
+                self.etapa_end_date: self.add_etapa_btn  # Al final, simula clic en el botón
+            }
+            
+            next_widget = next_widget_map.get(watched)
+
+            if next_widget:
+                if next_widget is self.add_etapa_btn:
+                    self.add_etapa_btn.click()  # Simular clic
+                else:
+                    next_widget.setFocus()
+                return True  # Evento manejado
+
+        return super().eventFilter(watched, event)
+
+    def _setup_enter_navigation(self):
+        """Instala el filtro de eventos en los widgets para la navegación con Enter."""
+        self.num_marea.installEventFilter(self)
+        self.anio_marea.installEventFilter(self)
+        self.observador_combo.installEventFilter(self)
+        self.buque_combo.installEventFilter(self)
+        self.etapa_start_date.installEventFilter(self)
+        self.etapa_end_date.installEventFilter(self)
+
+    def _add_trip_stage(self):
+        """Añade una nueva etapa de viaje a la lista, ordenada y con validación."""
+        start_date = self.etapa_start_date.date()
+        end_date = self.etapa_end_date.date()
+
+        if end_date < start_date:
+            QMessageBox.warning(self, "Error de Fechas", "La fecha final no puede ser anterior a la fecha inicial.")
+            return
+
+        for i in range(self.etapas_list.count()):
+            item = self.etapas_list.item(i)
+            existing_start, existing_end = item.data(Qt.UserRole)
+            if start_date <= existing_end and existing_start <= end_date:
+                QMessageBox.critical(self, "Error de Solapamiento",
+                                     f"La etapa se solapa con una existente: "
+                                     f"{existing_start.toString('yyyy-MM-dd')} a {existing_end.toString('yyyy-MM-dd')}")
+                return
+
+        # Crear el QListWidgetItem pero no añadirlo directamente
+        list_item = QListWidgetItem()
+        list_item.setData(Qt.UserRole, (start_date, end_date))
+
+        # Encontrar la posición correcta para mantener la lista ordenada
+        insert_row = 0
+        while insert_row < self.etapas_list.count():
+            item = self.etapas_list.item(insert_row)
+            existing_start, _ = item.data(Qt.UserRole)
+            if start_date < existing_start:
+                break
+            insert_row += 1
+        
+        self.etapas_list.insertItem(insert_row, list_item)
+        
+        # Crear y asignar el widget personalizado
+        item_widget = StageListItemWidget(start_date, end_date, list_item)
+        item_widget.deleted.connect(self._remove_trip_stage)
+        list_item.setSizeHint(item_widget.sizeHint())
+        self.etapas_list.setItemWidget(list_item, item_widget)
+
+        # Limpiar fechas y resetear foco
+        self.etapa_start_date.setDate(QDate.currentDate())
+        self.etapa_end_date.setDate(QDate.currentDate())
+        self.etapa_start_date.setFocus()
+
+    def _remove_trip_stage(self, item_to_delete):
+        """Elimina un item de la lista de etapas."""
+        row = self.etapas_list.row(item_to_delete)
+        if row >= 0:
+            self.etapas_list.takeItem(row)
+
