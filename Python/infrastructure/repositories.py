@@ -74,9 +74,9 @@ class CatalogRepository:
         return sorted(buques, key=lambda x: x.nombre)
 
     def get_observadores(self) -> List[Observador]:
-        """Lee 'Observadores y códigos.DBF' y devuelve una lista de entidades Observador."""
+        """Lee 'OBSERVAD.DBF' y devuelve una lista de entidades Observador."""
         observadores = []
-        dbf_path = self._get_full_path("Observadores y códigos.DBF")
+        dbf_path = self._get_full_path("OBSERVAD.DBF")
         try:
             table = dbf.Table(dbf_path, codepage='cp1252')
             table.open(dbf.READ_ONLY)
