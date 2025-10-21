@@ -284,7 +284,7 @@ class MainWindow(QMainWindow):
         for codinidep in state.get('especies', []):
             for especie in self.all_species:
                 if especie.codinidep == codinidep:
-                    self._add_target_specie(specie, save=False)
+                    self._add_target_specie(specie_to_add=especie, save=False)
                     break
         
         self._update_process_buttons_state()
@@ -463,6 +463,9 @@ class MainWindow(QMainWindow):
             item = self.etapas_list.item(i)
             existing_start, existing_end = item.data(Qt.UserRole)
             if start_date <= existing_end and existing_start <= end_date:
+                QMessageBox.critical(self, "Error de Solapamiento",
+                                     f"La etapa se solapa con una existente: "
+                                     f"{existing_start.toString('dd/MM/yyyy')} a {existing_end.toString('dd/MM/yyyy')}")
                 return
 
         list_item = QListWidgetItem()

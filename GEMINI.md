@@ -21,6 +21,7 @@ La GUI debe seguir un estándar de diseño moderno y profesional.
     * Tipografía limpia y legible.
 * **Estilizado (QSS):** La personalización visual debe implementarse rigurosamente mediante **Hojas de Estilo Qt (QSS)**. El código Python debe ser responsable de la lógica, no del estilo.
 * **Tema Claro/Oscuro:** Es obligatorio incluir la funcionalidad para cambiar entre un **Tema Claro** y un **Tema Oscuro**. El diseño QSS debe ser modular para soportar esta alternancia de forma dinámica.
+    * **Consistencia de Estilos:** Cada vez que se realice algún cambio en la UI que implique estilos, el cambio debe hacerse tanto para el modo claro como para el modo oscuro.
 * **Diseño Responsivo:** Usar **Layouts (QLayouts)** exclusivamente (e.g., `QVBoxLayout`, `QHBoxLayout`, `QGridLayout`) para organizar los widgets. **Queda prohibido** el uso de posicionamiento absoluto (`.move()` o `.setGeometry()`) a menos que sea estrictamente necesario y justificado para un widget específico y simple.
 
 ## 3. Arquitectura y Calidad de Código

@@ -42,7 +42,15 @@ def mock_repository(mocker, mock_species):
     return mock_repo
 
 @pytest.fixture
-def window(qt_app, mock_repository):
+def mock_config_manager(mocker):
+    """Crea un mock del config_manager."""
+    mock_cm = MagicMock()
+    mock_cm.load_config.return_value = None # No config file by default
+    mocker.patch('presentation.main_window.config_manager', new=mock_cm)
+    return mock_cm
+
+@pytest.fixture
+def window(qt_app, mock_repository, mock_config_manager):
     """Crea una instancia de MainWindow para las pruebas."""
     win = MainWindow()
     return win
@@ -54,6 +62,151 @@ def test_initial_load(window, mock_repository):
     mock_repository.get_especies.assert_called_once()
     # 3 especies + 1 item placeholder
     assert window.especie_combo.count() == 4
+
+def test_process_buttons_initial_state(window):
+    """Test: Verifica que los botones de proceso están deshabilitados inicialmente."""
+    for button in window.process_buttons:
+        assert not button.isEnabled()
+
+def test_process_buttons_enable_disable(qtbot, window):
+    """Test: Los botones de proceso se habilitan y deshabilitan correctamente."""
+    # Estado inicial: deshabilitado
+    assert not window.process_buttons[0].isEnabled()
+
+    # Rellenar todos los campos
+    window.num_marea.setText("123")
+    window.anio_marea.setText("2025")
+    window.observador_combo.setCurrentIndex(1)
+    window.buque_combo.setCurrentIndex(1)
+    
+    # Añadir una etapa
+    window.etapa_start_date.setDate(QDate(2025, 1, 1))
+    window.etapa_end_date.setDate(QDate(2025, 1, 5))
+    qtbot.mouseClick(window.add_etapa_btn, Qt.LeftButton)
+
+    # Añadir una especie
+    window.especie_combo.setCurrentIndex(1)
+    qtbot.mouseClick(window.add_especie_btn, Qt.LeftButton)
+
+    # Ahora los botones deben estar habilitados
+    for button in window.process_buttons:
+        assert button.isEnabled()
+
+    # Limpiar un campo (ej. número de marea)
+    window.num_marea.clear()
+
+    # Los botones deben deshabilitarse de nuevo
+    for button in window.process_buttons:
+        assert not button.isEnabled()
+
+def test_save_state_on_change(window, mock_config_manager):
+    """Test: El estado se guarda automáticamente al cambiar un campo."""
+    # Limpiar llamadas previas
+    mock_config_manager.save_config.reset_mock()
+
+    # Cambiar un campo
+    window.num_marea.setText("456")
+
+    # Verificar que se llamó al guardado
+    mock_config_manager.save_config.assert_called()
+
+def test_load_state_on_startup(mocker, qt_app, mock_repository):
+    """Test: El estado se carga correctamente al iniciar si existe un archivo de config."""
+    # Preparar un estado guardado
+    saved_state = {
+        'num_marea': '789',
+        'anio_marea': '2024',
+        'observador_cod': '1',
+        'buque_cod': '123',
+        'etapas': [
+            {'start_date': '2024-03-01', 'end_date': '2024-03-05'}
+        ],
+        'especies': ['3'] # Merluza
+    }
+    
+    mock_cm = MagicMock()
+    mock_cm.load_config.return_value = saved_state
+    mocker.patch('presentation.main_window.config_manager', new=mock_cm)
+
+    # Crear una nueva ventana para forzar la carga del estado
+    win = MainWindow()
+
+    # Verificar que los campos se han llenado
+    assert win.num_marea.text() == '789'
+    assert win.anio_marea.text() == '2024'
+    assert win.observador_combo.currentIndex() == 1
+    assert win.buque_combo.currentIndex() == 1
+    assert win.etapas_list.count() == 1
+    assert win.especies_list.count() == 1
+    assert win.especies_list.item(0).data(Qt.UserRole).nom_vul_cas == 'Merluza'
+
+def test_clear_all_fields(qtbot, window, mock_config_manager):
+    """Test: El botón 'Limpiar Todo' reinicia la UI y guarda el estado vacío."""
+    # Llenar algunos campos primero
+    window.num_marea.setText("111")
+    window.observador_combo.setCurrentIndex(1)
+    qtbot.mouseClick(window.add_etapa_btn, Qt.LeftButton)
+    mock_config_manager.save_config.reset_mock()
+
+    # Clic en el botón de limpiar
+    qtbot.mouseClick(window.clear_button, Qt.LeftButton)
+
+    # Verificar que los campos están vacíos
+    assert window.num_marea.text() == ''
+    assert window.observador_combo.currentIndex() == 0
+    assert window.etapas_list.count() == 0
+    
+    # Verificar que el año se ha reseteado al actual
+    from datetime import datetime
+    assert window.anio_marea.text() == str(datetime.now().year)
+
+    # Verificar que se guardó el estado vacío
+    mock_config_manager.save_config.assert_called_with({
+        'num_marea': '',
+        'anio_marea': str(datetime.now().year),
+        'observador_cod': None,
+        'buque_cod': None,
+        'etapas': [],
+        'especies': []
+    })
+
+def test_load_state_with_missing_keys(mocker, qt_app, mock_repository):
+    """Test: Cargar un estado con claves faltantes no rompe la aplicación."""
+    # Estado solo con una clave
+    saved_state = {
+        'num_marea': '999'
+    }
+    
+    mock_cm = MagicMock()
+    mock_cm.load_config.return_value = saved_state
+    mocker.patch('presentation.main_window.config_manager', new=mock_cm)
+
+    # La creación de la ventana no debe fallar
+    win = MainWindow()
+
+    assert win.num_marea.text() == '999'
+    # El resto de los campos deben tener sus valores por defecto
+    from datetime import datetime
+    assert win.anio_marea.text() == str(datetime.now().year)
+    assert win.observador_combo.currentIndex() == 0
+    assert win.etapas_list.count() == 0
+
+def test_load_state_with_invalid_values(mocker, qt_app, mock_repository):
+    """Test: Cargar un estado con valores inválidos (códigos no existentes)."""
+    saved_state = {
+        'observador_cod': '999', # Código no existente
+        'especies': ['999'] # Código no existente
+    }
+    
+    mock_cm = MagicMock()
+    mock_cm.load_config.return_value = saved_state
+    mocker.patch('presentation.main_window.config_manager', new=mock_cm)
+
+    win = MainWindow()
+
+    # Los combos no deben seleccionar nada y las listas deben estar vacías
+    assert win.observador_combo.currentIndex() == 0
+    assert win.especies_list.count() == 0
 
 def test_add_target_specie(qtbot, window):
     """Test: Añadir una especie a la lista de especies objetivo."""
@@ -167,6 +320,17 @@ def test_prevent_overlapping_stages(qtbot, window, mocker):
     qtbot.mouseClick(window.add_etapa_btn, Qt.LeftButton)
 
     assert window.etapas_list.count() == 1
+    mock_msg_box.assert_called_once()
+
+def test_prevent_end_date_before_start_date(qtbot, window, mocker):
+    """Test: No se puede añadir una etapa con fecha final anterior a la inicial."""
+    mock_msg_box = mocker.patch('presentation.main_window.QMessageBox.warning')
+
+    window.etapa_start_date.setDate(QDate(2025, 10, 25))
+    window.etapa_end_date.setDate(QDate(2025, 10, 20))
+    qtbot.mouseClick(window.add_etapa_btn, Qt.LeftButton)
+
+    assert window.etapas_list.count() == 0
     mock_msg_box.assert_called_once()
 
 def test_enter_in_species_combo_adds_item(qtbot, window):
