@@ -17,6 +17,14 @@ from presentation.stage_list_item_widget import StageListItemWidget
 from presentation.species_list_item_widget import SpeciesListItemWidget
 from domain.entities import Especie, Buque, Observador
 
+PROCESS_BUTTON_NAMES = [
+    "Cortar bases", "Control Dias horas Arrastrero", 
+    "Posiciones con una especie arrastreros", "Resumen produccion",
+    "Distribución de tallas", "Distribución de tallas XXXX",
+    "Controla archivo L", "Largo peso", "Reemplaza especies",
+    "Resumen muestra/maduros", "BUSCAR CODIGO BARCO/AIP"
+]
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -38,8 +46,22 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
 
-        # --- 1. Sección de Datos de Marea (Layout con labels arriba) ---
-        datos_group = QGroupBox("Datos Generales de Marea")        
+        main_layout.addWidget(self._setup_datos_marea_group())
+
+        listas_container = QWidget()
+        listas_layout = QHBoxLayout(listas_container)
+        listas_layout.addWidget(self._setup_etapas_group())
+        listas_layout.addWidget(self._setup_especies_group())
+        main_layout.addWidget(listas_container)
+
+        main_layout.addWidget(self._setup_procesos_group())
+
+        self._setup_enter_navigation()
+        self._update_process_buttons_state()
+
+    def _setup_datos_marea_group(self) -> QGroupBox:
+        """Configura el QGroupBox de 'Datos Generales de Marea'."""
+        datos_group = QGroupBox("Datos Generales de Marea")
 
         self.num_marea = QLineEdit()
         self.num_marea.setMaxLength(3)
@@ -58,19 +80,17 @@ class MainWindow(QMainWindow):
         self.buque_info_label.setReadOnly(True)
         self.buque_info_label.setStyleSheet("font-style: italic; color: #555;")
 
-        # Conexión de señales para actualizar el estado de los botones de procesos
+        # Conexión de señales
         self.num_marea.textChanged.connect(self._update_process_buttons_state)
         self.anio_marea.textChanged.connect(self._update_process_buttons_state)
         self.observador_combo.currentIndexChanged.connect(self._update_process_buttons_state)
         self.buque_combo.currentIndexChanged.connect(self._update_process_buttons_state)
-
-        # Conexión de señales para autoguardado
         self.num_marea.textChanged.connect(self._save_state)
         self.anio_marea.textChanged.connect(self._save_state)
         self.observador_combo.currentIndexChanged.connect(self._save_state)
         self.buque_combo.currentIndexChanged.connect(self._save_state)
 
-        # Layouts para cada sección de datos
+        # Layouts
         num_marea_layout = QVBoxLayout()
         num_marea_layout.addWidget(QLabel("Número de Marea"))
         num_marea_layout.addWidget(self.num_marea)
@@ -93,12 +113,10 @@ class MainWindow(QMainWindow):
         datos_main_layout.addLayout(buque_layout, 2)
         
         datos_group.setLayout(datos_main_layout)
-        main_layout.addWidget(datos_group)
+        return datos_group
 
-        # --- 2. Sección de Listas Dinámicas ---
-        listas_container = QWidget()
-        listas_layout = QHBoxLayout(listas_container)
-
+    def _setup_etapas_group(self) -> QGroupBox:
+        """Configura el QGroupBox de 'Etapas de Marea'."""
         etapas_group = QGroupBox("Etapas de Marea")
         etapas_v_layout = QVBoxLayout()
         
@@ -122,7 +140,10 @@ class MainWindow(QMainWindow):
         etapas_v_layout.addWidget(self.etapas_list)
         etapas_v_layout.addWidget(self.add_etapa_btn)
         etapas_group.setLayout(etapas_v_layout)
+        return etapas_group
 
+    def _setup_especies_group(self) -> QGroupBox:
+        """Configura el QGroupBox de 'Especies Objetivo'."""
         especies_group = QGroupBox("Especies Objetivo")
         especies_v_layout = QVBoxLayout()
 
@@ -151,25 +172,15 @@ class MainWindow(QMainWindow):
         especies_v_layout.addWidget(self.especies_list)
         especies_v_layout.addWidget(self.add_especie_btn)
         especies_group.setLayout(especies_v_layout)
+        return especies_group
 
-        listas_layout.addWidget(etapas_group)
-        listas_layout.addWidget(especies_group)
-        main_layout.addWidget(listas_container)
-
-        # --- 3. Sección de Procesos (Menú) ---
+    def _setup_procesos_group(self) -> QGroupBox:
+        """Configura el QGroupBox de 'Procesos'."""
         procesos_group = QGroupBox("Procesos")
         procesos_layout = QGridLayout()
 
-        button_names = [
-            "Cortar bases", "Control Dias horas Arrastrero", 
-            "Posiciones con una especie arrastreros", "Resumen produccion",
-            "Distribución de tallas", "Distribución de tallas XXXX",
-            "Controla archivo L", "Largo peso", "Reemplaza especies",
-            "Resumen muestra/maduros", "BUSCAR CODIGO BARCO/AIP"
-        ]
-
         row, col = 0, 0
-        for name in button_names:
+        for name in PROCESS_BUTTON_NAMES:
             button = QPushButton(name)
             button.setEnabled(False)
             self.process_buttons.append(button)
@@ -184,10 +195,7 @@ class MainWindow(QMainWindow):
         procesos_layout.addWidget(self.clear_button, row, 0, 1, 3) # Span across all columns
 
         procesos_group.setLayout(procesos_layout)
-        main_layout.addWidget(procesos_group)
-
-        self._setup_enter_navigation()
-        self._update_process_buttons_state()
+        return procesos_group
 
     def _load_catalogs(self):
         """Carga los datos de los catálogos en los ComboBox."""
