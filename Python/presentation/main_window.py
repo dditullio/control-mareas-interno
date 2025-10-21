@@ -34,28 +34,45 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout(central_widget)
 
         # --- 1. Sección de Datos de Marea (Layout con labels arriba) ---
-        datos_group = QGroupBox("Datos Generales de Marea")
-        datos_main_layout = QHBoxLayout()
-
-        def create_labeled_widget(label_text, widget):
-            v_layout = QVBoxLayout()
-            v_layout.setSpacing(2)
-            label = QLabel(label_text)
-            v_layout.addWidget(label)
-            v_layout.addWidget(widget)
-            return v_layout
+        datos_group = QGroupBox("Datos Generales de Marea")        
 
         self.num_marea = QLineEdit()
         self.num_marea.setMaxLength(3)
         self.anio_marea = QLineEdit()
         self.anio_marea.setMaxLength(4)
         self.observador_combo = QComboBox()
-        self.buque_combo = QComboBox()
+        self.observador_combo.currentIndexChanged.connect(self._update_observador_info)
+        self.observador_info_label = QLineEdit()
+        self.observador_info_label.setReadOnly(True)
+        self.observador_info_label.setStyleSheet("font-style: italic; color: #555;")
 
-        datos_main_layout.addLayout(create_labeled_widget("Número de Marea", self.num_marea), 1)
-        datos_main_layout.addLayout(create_labeled_widget("Año de Marea", self.anio_marea), 1)
-        datos_main_layout.addLayout(create_labeled_widget("Observador", self.observador_combo), 2)
-        datos_main_layout.addLayout(create_labeled_widget("Buque", self.buque_combo), 2)
+        self.buque_combo = QComboBox()
+        self.buque_combo.currentIndexChanged.connect(self._update_buque_info)
+        self.buque_info_label = QLineEdit()
+        self.buque_info_label.setReadOnly(True)
+        self.buque_info_label.setStyleSheet("font-style: italic; color: #555;")
+
+        # Layouts para cada sección de datos
+        num_marea_layout = QVBoxLayout()
+        num_marea_layout.addWidget(QLabel("Número de Marea"))
+        num_marea_layout.addWidget(self.num_marea)
+        anio_marea_layout = QVBoxLayout()
+        anio_marea_layout.addWidget(QLabel("Año de Marea"))
+        anio_marea_layout.addWidget(self.anio_marea)
+        observador_layout = QVBoxLayout()
+        observador_layout.addWidget(QLabel("Observador"))
+        observador_layout.addWidget(self.observador_combo)
+        observador_layout.addWidget(self.observador_info_label)
+        buque_layout = QVBoxLayout()
+        buque_layout.addWidget(QLabel("Buque"))
+        buque_layout.addWidget(self.buque_combo)
+        buque_layout.addWidget(self.buque_info_label)
+
+        datos_main_layout = QHBoxLayout()
+        datos_main_layout.addLayout(num_marea_layout, 1)
+        datos_main_layout.addLayout(anio_marea_layout, 1)
+        datos_main_layout.addLayout(observador_layout, 2)
+        datos_main_layout.addLayout(buque_layout, 2)
         
         datos_group.setLayout(datos_main_layout)
         main_layout.addWidget(datos_group)
@@ -166,6 +183,33 @@ class MainWindow(QMainWindow):
         # Cargar y guardar todas las especies, luego poblar el combo
         self.all_species = sorted(repo.get_especies(), key=lambda e: e.nom_vul_cas or '')
         self._repopulate_species_combo()
+
+        # Actualizar los campos de información con el estado inicial (vacío)
+        self._update_observador_info()
+        self._update_buque_info()
+
+    def _update_observador_info(self) -> None:
+        """Actualiza el campo de texto con la información del observador seleccionado."""
+        selected_index = self.observador_combo.currentIndex()
+        observador = self.observador_combo.itemData(selected_index)
+
+        if observador:
+            self.observador_info_label.setText(f"Código: {observador.obs_nro}")
+        else:
+            self.observador_info_label.clear()
+
+    def _update_buque_info(self) -> None:
+        """Actualiza el campo de texto con la información del buque seleccionado."""
+        selected_index = self.buque_combo.currentIndex()
+        buque = self.buque_combo.itemData(selected_index)
+
+        if buque:
+            info_text = (f"Cód.: {buque.buque_cod}, "
+                         f"Esl.: {buque.eslora:.2f} m, "
+                         f"Pot.: {buque.pot_hp} HP")
+            self.buque_info_label.setText(info_text)
+        else:
+            self.buque_info_label.clear()
 
     def _toggle_species_view(self):
         """Cambia el modo de visualización de las especies y repuebla el ComboBox."""

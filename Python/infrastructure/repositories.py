@@ -58,8 +58,9 @@ class CatalogRepository:
                         buque_cod=str(record.buquecod).strip(),
                         tipo_flota=str(record.tipo_flta).strip(),
                         flota=str(record.flota).strip(),
-                        eslora=float(record.eslora or 0),
-                        pot_hp=int(record.pothp or 0),
+                        # Manejo robusto de conversión para campos numéricos
+                        eslora=float(str(record.eslora or 0).strip() or 0),
+                        pot_hp=int(float(str(record.pothp or 0).strip() or 0)),
                         matricula=str(record.matbuq).strip()
                     ))
                 except (dbf.FieldMissingError, AttributeError) as field_err:
