@@ -1,0 +1,31 @@
+# Entornos virtuales de Python
+.env
+.venv
+env/
+venv/
+
+# Archivos de cache de Python
+__pycache__/
+*.pyc
+
+# Reportes de tests y cobertura
+.pytest_cache/
+.coverage
+
+# Configuración del editor de código
+.vscode/
+
+# Archivos temporales o compilados de FoxPro
+*.tmp
+*.bak
+*.fxp
+*.err
+*.log
+*.exe
+
+# Archivos temporales de Microsoft Office
+~$*
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
