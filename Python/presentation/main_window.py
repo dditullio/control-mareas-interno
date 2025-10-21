@@ -12,9 +12,10 @@ from PySide6.QtWidgets import (
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from infrastructure.repositories import CatalogRepository
+from infrastructure import config_manager
 from presentation.stage_list_item_widget import StageListItemWidget
 from presentation.species_list_item_widget import SpeciesListItemWidget
-from domain.entities import Especie
+from domain.entities import Especie, Buque, Observador
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -29,6 +30,7 @@ class MainWindow(QMainWindow):
 
         self._setup_ui()
         self._load_catalogs()
+        self._load_state()
 
     def _setup_ui(self):
         """Configura la interfaz de usuario."""
@@ -61,6 +63,12 @@ class MainWindow(QMainWindow):
         self.anio_marea.textChanged.connect(self._update_process_buttons_state)
         self.observador_combo.currentIndexChanged.connect(self._update_process_buttons_state)
         self.buque_combo.currentIndexChanged.connect(self._update_process_buttons_state)
+
+        # Conexión de señales para autoguardado
+        self.num_marea.textChanged.connect(self._save_state)
+        self.anio_marea.textChanged.connect(self._save_state)
+        self.observador_combo.currentIndexChanged.connect(self._save_state)
+        self.buque_combo.currentIndexChanged.connect(self._save_state)
 
         # Layouts para cada sección de datos
         num_marea_layout = QVBoxLayout()
@@ -171,6 +179,10 @@ class MainWindow(QMainWindow):
                 col = 0
                 row += 1
         
+        self.clear_button = QPushButton("Limpiar Todo")
+        self.clear_button.clicked.connect(self._clear_all_fields)
+        procesos_layout.addWidget(self.clear_button, row, 0, 1, 3) # Span across all columns
+
         procesos_group.setLayout(procesos_layout)
         main_layout.addWidget(procesos_group)
 
@@ -200,6 +212,82 @@ class MainWindow(QMainWindow):
         # Actualizar los campos de información con el estado inicial (vacío)
         self._update_observador_info()
         self._update_buque_info()
+
+    def _clear_all_fields(self):
+        """Limpia todos los campos y reinicia el estado."""
+        self.num_marea.clear()
+        self.anio_marea.setText(str(datetime.now().year))
+        self.observador_combo.setCurrentIndex(0)
+        self.buque_combo.setCurrentIndex(0)
+        self.etapas_list.clear()
+        self.especies_list.clear()
+        self._update_process_buttons_state()
+        self._save_state()
+
+    def _save_state(self):
+        """Guarda el estado actual de la aplicación en un archivo de configuración."""
+        etapas = []
+        for i in range(self.etapas_list.count()):
+            item = self.etapas_list.item(i)
+            start_date, end_date = item.data(Qt.UserRole)
+            etapas.append({
+                'start_date': start_date.toString(Qt.ISODate),
+                'end_date': end_date.toString(Qt.ISODate)
+            })
+
+        especies = []
+        for i in range(self.especies_list.count()):
+            item = self.especies_list.item(i)
+            specie = item.data(Qt.UserRole)
+            especies.append(specie.codinidep)
+
+        state = {
+            'num_marea': self.num_marea.text(),
+            'anio_marea': self.anio_marea.text(),
+            'observador_cod': self.observador_combo.currentData().obs_nro if self.observador_combo.currentIndex() > 0 else None,
+            'buque_cod': self.buque_combo.currentData().buque_cod if self.buque_combo.currentIndex() > 0 else None,
+            'etapas': etapas,
+            'especies': especies
+        }
+        config_manager.save_config(state)
+
+    def _load_state(self):
+        """Carga el estado de la aplicación desde un archivo de configuración."""
+        state = config_manager.load_config()
+        if not state:
+            return
+
+        self.num_marea.setText(state.get('num_marea', ''))
+        self.anio_marea.setText(state.get('anio_marea', str(datetime.now().year)))
+
+        if state.get('observador_cod'):
+            for i in range(self.observador_combo.count()):
+                obs = self.observador_combo.itemData(i)
+                if obs and obs.obs_nro == state['observador_cod']:
+                    self.observador_combo.setCurrentIndex(i)
+                    break
+
+        if state.get('buque_cod'):
+            for i in range(self.buque_combo.count()):
+                buque = self.buque_combo.itemData(i)
+                if buque and buque.buque_cod == state['buque_cod']:
+                    self.buque_combo.setCurrentIndex(i)
+                    break
+
+        self.etapas_list.clear()
+        for etapa_data in state.get('etapas', []):
+            start_date = QDate.fromString(etapa_data['start_date'], Qt.ISODate)
+            end_date = QDate.fromString(etapa_data['end_date'], Qt.ISODate)
+            self._add_trip_stage(start_date, end_date, save=False)
+
+        self.especies_list.clear()
+        for codinidep in state.get('especies', []):
+            for especie in self.all_species:
+                if especie.codinidep == codinidep:
+                    self._add_target_specie(specie, save=False)
+                    break
+        
+        self._update_process_buttons_state()
 
     def _update_observador_info(self) -> None:
         """Actualiza el campo de texto con la información del observador seleccionado."""
@@ -274,23 +362,23 @@ class MainWindow(QMainWindow):
         else:
             self.especie_combo.lineEdit().setText(current_text)
 
-    def _add_target_specie(self):
+    def _add_target_specie(self, specie_to_add=None, save=True):
         """Añade la especie seleccionada a la lista de especies objetivo, manteniendo el orden alfabético."""
-        selected_index = self.especie_combo.currentIndex()
-        if selected_index <= 0:
-            return
-
-        specie = self.especie_combo.itemData(selected_index)
+        specie = specie_to_add
+        if not specie:
+            selected_index = self.especie_combo.currentIndex()
+            if selected_index <= 0:
+                return
+            specie = self.especie_combo.itemData(selected_index)
+        
         if not isinstance(specie, Especie):
             return
 
         for i in range(self.especies_list.count()):
             item = self.especies_list.item(i)
             if item.data(Qt.UserRole).codinidep == specie.codinidep:
-                QMessageBox.warning(self, "Especie Duplicada", "La especie ya se encuentra en la lista.")
-                self.especie_combo.setCurrentIndex(0)
-                self.especie_combo.lineEdit().clear()
-                self.especie_combo.setFocus()
+                if not specie_to_add:
+                    QMessageBox.warning(self, "Especie Duplicada", "La especie ya se encuentra en la lista.")
                 return
 
         list_item = QListWidgetItem()
@@ -300,22 +388,24 @@ class MainWindow(QMainWindow):
         while insert_row < self.especies_list.count():
             item = self.especies_list.item(insert_row)
             existing_specie = item.data(Qt.UserRole)
-            # Ordenar por el display_name por defecto de la entidad para consistencia
             if specie.display_name < existing_specie.display_name:
                 break
             insert_row += 1
         
         self.especies_list.insertItem(insert_row, list_item)
 
-        # Usar el display_name por defecto para la lista de objetivos
         item_widget = SpeciesListItemWidget(specie.display_name, list_item)
         item_widget.deleted.connect(self._remove_target_specie)
         list_item.setSizeHint(item_widget.sizeHint())
         self.especies_list.setItemWidget(list_item, item_widget)
         
-        self.especie_combo.setCurrentIndex(0)
-        self.especie_combo.lineEdit().clear()
-        self.especie_combo.setFocus()
+        if not specie_to_add:
+            self.especie_combo.setCurrentIndex(0)
+            self.especie_combo.lineEdit().clear()
+            self.especie_combo.setFocus()
+        
+        if save:
+            self._save_state()
         self._update_process_buttons_state()
 
     def _remove_target_specie(self, item_to_delete):
@@ -323,6 +413,7 @@ class MainWindow(QMainWindow):
         row = self.especies_list.row(item_to_delete)
         if row >= 0:
             self.especies_list.takeItem(row)
+        self._save_state()
         self._update_process_buttons_state()
 
     def eventFilter(self, watched, event):
@@ -358,10 +449,11 @@ class MainWindow(QMainWindow):
         self.etapa_start_date.installEventFilter(self)
         self.etapa_end_date.installEventFilter(self)
 
-    def _add_trip_stage(self):
+    def _add_trip_stage(self, start_date=None, end_date=None, save=True):
         """Añade una nueva etapa de viaje a la lista, ordenada y con validación."""
-        start_date = self.etapa_start_date.date()
-        end_date = self.etapa_end_date.date()
+        if start_date is None or end_date is None:
+            start_date = self.etapa_start_date.date()
+            end_date = self.etapa_end_date.date()
 
         if end_date < start_date:
             QMessageBox.warning(self, "Error de Fechas", "La fecha final no puede ser anterior a la fecha inicial.")
@@ -371,9 +463,6 @@ class MainWindow(QMainWindow):
             item = self.etapas_list.item(i)
             existing_start, existing_end = item.data(Qt.UserRole)
             if start_date <= existing_end and existing_start <= end_date:
-                QMessageBox.critical(self, "Error de Solapamiento",
-                                     f"La etapa se solapa con una existente: "
-                                     f"{existing_start.toString('dd/MM/yyyy')} a {existing_end.toString('dd/MM/yyyy')}")
                 return
 
         list_item = QListWidgetItem()
@@ -394,9 +483,11 @@ class MainWindow(QMainWindow):
         list_item.setSizeHint(item_widget.sizeHint())
         self.etapas_list.setItemWidget(list_item, item_widget)
 
-        self.etapa_start_date.setDate(QDate.currentDate())
-        self.etapa_end_date.setDate(QDate.currentDate())
-        self.etapa_start_date.setFocus()
+        if save:
+            self.etapa_start_date.setDate(QDate.currentDate())
+            self.etapa_end_date.setDate(QDate.currentDate())
+            self.etapa_start_date.setFocus()
+            self._save_state()
         self._update_process_buttons_state()
 
     def _remove_trip_stage(self, item_to_delete):
@@ -404,4 +495,5 @@ class MainWindow(QMainWindow):
         row = self.etapas_list.row(item_to_delete)
         if row >= 0:
             self.etapas_list.takeItem(row)
+        self._save_state()
         self._update_process_buttons_state()
