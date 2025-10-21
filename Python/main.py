@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     # Cargar y aplicar el stylesheet
     # La ruta se construye relativa a este script
-    style_path = os.path.join(os.path.dirname(__file__), 'presentation', 'styles', 'material.qss')
+    style_path = os.path.join(os.path.dirname(__file__), 'presentation', 'styles', 'light.qss')
     style_sheet = load_stylesheet(style_path)
     app.setStyleSheet(style_sheet)
 

@@ -1,153 +1,50 @@
-/* styles/dark.qss */
 
 QWidget {
-    background-color: #1C1B1F; /* Background */
-    color: #E6E1E5; /* On Background */
-    font-family: "Segoe UI", "Roboto", "Helvetica Neue", "Arial", sans-serif;
-    font-size: 10pt;
-}
-
-QMainWindow {
-    background-color: #1C1B1F;
-}
-
-QMenuBar {
-    background-color: #49454F; /* Surface Variant */
-    color: #CAC4D0; /* On Surface Variant */
-}
-
-QMenuBar::item {
-    background-color: transparent;
-    padding: 4px 8px;
-}
-
-QMenuBar::item:selected {
-    background-color: #4F378B; /* Primary Container */
-    color: #EADDFF; /* On Primary Container */
-}
-
-QMenu {
-    background-color: #1C1B1F; /* Surface */
-    color: #E6E1E5; /* On Surface */
-    border: 1px solid #49454F; /* Surface Variant */
-}
-
-QMenu::item:selected {
-    background-color: #4F378B; /* Primary Container */
-}
-
-QLabel {
-    color: #E6E1E5; /* On Background */
-    padding: 4px;
-}
-
-QLineEdit, QTextEdit, QPlainTextEdit {
-    background-color: #49454F; /* Surface Variant */
-    color: #CAC4D0; /* On Surface Variant */
-    border: 1px solid #938F99; /* Outline */
-    border-radius: 4px;
-    padding: 8px;
-}
-
-QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
-    border: 2px solid #D0BCFF; /* Primary */
-}
-
-QPushButton {
-    background-color: #D0BCFF; /* Primary */
-    color: #381E72; /* On Primary */
-    border: none;
-    border-radius: 16px;
-    padding: 10px 24px;
-    font-weight: bold;
-    min-height: 24px;
-}
-
-QPushButton:hover {
-    background-color: #BBA8E9;
-}
-
-QPushButton:pressed {
-    background-color: #A28FD8;
-}
-
-QPushButton:disabled {
-    background-color: #49454F; /* Surface Variant */
-    color: #938F99; /* Outline */
-}
-
-QComboBox {
-    background-color: #49454F; /* Surface Variant */
-    color: #CAC4D0; /* On Surface Variant */
-    border: 1px solid #938F99; /* Outline */
-    border-radius: 4px;
-    padding: 8px;
-}
-
-QComboBox::drop-down {
-    border: none;
-}
-
-QComboBox::down-arrow {
-    image: url(down_arrow_dark.png); /* Needs a different icon for dark mode */
-}
-
-QComboBox QAbstractItemView {
-    background-color: #1C1B1F; /* Surface */
-    border: 1px solid #49454F; /* Surface Variant */
-    selection-background-color: #4F378B; /* Primary Container */
-}
-
-QTableView {
-    background-color: #1C1B1F; /* Surface */
-    gridline-color: #49454F; /* Surface Variant */
-    border: 1px solid #938F99; /* Outline */
-}
-
-QHeaderView::section {
-    background-color: #4F378B; /* Primary Container */
-    color: #EADDFF; /* On Primary Container */
-    padding: 4px;
-    border: 1px solid #938F99; /* Outline */
-}
-
-QTableView::item {
-    padding: 4px;
-}
-
-QTableView::item:selected {
-    background-color: #6750A4; /* Inverse Primary */
+    background-color: #2E2E2E;
     color: #FFFFFF;
+    font-size: 14px;
 }
-
-QScrollBar:vertical {
-    border: none;
-    background: #49454F;
-    width: 10px;
-    margin: 0px 0px 0px 0px;
+QMainWindow {
+    background-color: #212121;
 }
-
-QScrollBar::handle:vertical {
-    background: #938F99;
-    min-height: 20px;
-    border-radius: 5px;
-}
-
-QScrollBar:horizontal {
-    border: none;
-    background: #49454F;
-    height: 10px;
-    margin: 0px 0px 0px 0px;
-}
-
-QScrollBar::handle:horizontal {
-    background: #938F99;
-    min-width: 20px;
-    border-radius: 5px;
-}
-
-QLabel#titleLabel {
-    font-size: 14pt;
+QGroupBox {
     font-weight: bold;
-    padding-bottom: 10px;
+    border: 1px solid #424242;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 10px;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+    background-color: #2E2E2E;
+    border-radius: 4px;
+}
+QLabel {
+    font-weight: bold;
+}
+QLineEdit, QComboBox, QListWidget {
+    background-color: #424242;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    padding: 5px;
+}
+QLineEdit:focus, QComboBox:focus, QListWidget:focus {
+    border: 1px solid #BB86FC;
+}
+QPushButton {
+    background-color: #6200EE;
+    color: #FFFFFF;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    min-height: 20px;
+}
+QPushButton:hover {
+    background-color: #7F39FB;
+}
+QPushButton:pressed {
+    background-color: #3700B3;
 }
