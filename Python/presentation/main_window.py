@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 from PySide6.QtCore import Qt, QEvent, QDate
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
@@ -42,6 +43,7 @@ class MainWindow(QMainWindow):
         self.num_marea.setMaxLength(3)
         self.anio_marea = QLineEdit()
         self.anio_marea.setMaxLength(4)
+        self.anio_marea.setText(str(datetime.now().year))
         self.observador_combo = QComboBox()
         self.observador_combo.currentIndexChanged.connect(self._update_observador_info)
         self.observador_info_label = QLineEdit()
@@ -228,7 +230,9 @@ class MainWindow(QMainWindow):
             self.num_marea.text(),
             self.anio_marea.text(),
             self.observador_combo.currentIndex() > 0,
-            self.buque_combo.currentIndex() > 0
+            self.buque_combo.currentIndex() > 0,
+            self.etapas_list.count() > 0,
+            self.especies_list.count() > 0
         ])
 
         for button in self.process_buttons:
@@ -312,12 +316,14 @@ class MainWindow(QMainWindow):
         self.especie_combo.setCurrentIndex(0)
         self.especie_combo.lineEdit().clear()
         self.especie_combo.setFocus()
+        self._update_process_buttons_state()
 
     def _remove_target_specie(self, item_to_delete):
         """Elimina un item de la lista de especies."""
         row = self.especies_list.row(item_to_delete)
         if row >= 0:
             self.especies_list.takeItem(row)
+        self._update_process_buttons_state()
 
     def eventFilter(self, watched, event):
         """Filtro de eventos para manejar la tecla Enter como Tab."""
@@ -391,9 +397,11 @@ class MainWindow(QMainWindow):
         self.etapa_start_date.setDate(QDate.currentDate())
         self.etapa_end_date.setDate(QDate.currentDate())
         self.etapa_start_date.setFocus()
+        self._update_process_buttons_state()
 
     def _remove_trip_stage(self, item_to_delete):
         """Elimina un item de la lista de etapas."""
         row = self.etapas_list.row(item_to_delete)
         if row >= 0:
             self.etapas_list.takeItem(row)
+        self._update_process_buttons_state()
