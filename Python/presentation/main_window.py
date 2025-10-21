@@ -23,6 +23,8 @@ class MainWindow(QMainWindow):
 
         self.all_species = []
         self.species_search_mode = 'common_first'  # 'common_first' or 'scientific_first'
+        self.process_buttons = []
+
 
         self._setup_ui()
         self._load_catalogs()
@@ -51,6 +53,12 @@ class MainWindow(QMainWindow):
         self.buque_info_label = QLineEdit()
         self.buque_info_label.setReadOnly(True)
         self.buque_info_label.setStyleSheet("font-style: italic; color: #555;")
+
+        # Conexión de señales para actualizar el estado de los botones de procesos
+        self.num_marea.textChanged.connect(self._update_process_buttons_state)
+        self.anio_marea.textChanged.connect(self._update_process_buttons_state)
+        self.observador_combo.currentIndexChanged.connect(self._update_process_buttons_state)
+        self.buque_combo.currentIndexChanged.connect(self._update_process_buttons_state)
 
         # Layouts para cada sección de datos
         num_marea_layout = QVBoxLayout()
@@ -153,6 +161,8 @@ class MainWindow(QMainWindow):
         row, col = 0, 0
         for name in button_names:
             button = QPushButton(name)
+            button.setEnabled(False)
+            self.process_buttons.append(button)
             procesos_layout.addWidget(button, row, col)
             col += 1
             if col > 2:
@@ -163,6 +173,7 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(procesos_group)
 
         self._setup_enter_navigation()
+        self._update_process_buttons_state()
 
     def _load_catalogs(self):
         """Carga los datos de los catálogos en los ComboBox."""
@@ -210,6 +221,18 @@ class MainWindow(QMainWindow):
             self.buque_info_label.setText(info_text)
         else:
             self.buque_info_label.clear()
+
+    def _update_process_buttons_state(self) -> None:
+        """Habilita o deshabilita los botones de procesos según el estado de los campos de marea."""
+        marea_completa = all([
+            self.num_marea.text(),
+            self.anio_marea.text(),
+            self.observador_combo.currentIndex() > 0,
+            self.buque_combo.currentIndex() > 0
+        ])
+
+        for button in self.process_buttons:
+            button.setEnabled(marea_completa)
 
     def _toggle_species_view(self):
         """Cambia el modo de visualización de las especies y repuebla el ComboBox."""
