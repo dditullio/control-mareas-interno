@@ -5,7 +5,8 @@ CONFIG_FILE = "config.json"
 
 def get_config_path():
     """Obtiene la ruta absoluta al archivo de configuración."""
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), CONFIG_FILE)
+    # Guardar config.json en el directorio padre (la raíz de la app de Python)
+    return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), CONFIG_FILE)
 
 def save_config(data):
     """Guarda la configuración en un archivo JSON."""

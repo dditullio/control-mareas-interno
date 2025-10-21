@@ -39,6 +39,7 @@ class MainWindow(QMainWindow):
         self._setup_ui()
         self._load_catalogs()
         self._load_state()
+        self._connect_signals()
 
     def _setup_ui(self):
         """Configura la interfaz de usuario."""
@@ -58,6 +59,18 @@ class MainWindow(QMainWindow):
 
         self._setup_enter_navigation()
         self._update_process_buttons_state()
+
+    def _connect_signals(self):
+        """Conecta las señales de los widgets a sus respectivos slots."""
+        self.num_marea.textChanged.connect(self._update_process_buttons_state)
+        self.anio_marea.textChanged.connect(self._update_process_buttons_state)
+        self.observador_combo.currentIndexChanged.connect(self._update_process_buttons_state)
+        self.buque_combo.currentIndexChanged.connect(self._update_process_buttons_state)
+
+        self.num_marea.textChanged.connect(self._save_state)
+        self.anio_marea.textChanged.connect(self._save_state)
+        self.observador_combo.currentIndexChanged.connect(self._save_state)
+        self.buque_combo.currentIndexChanged.connect(self._save_state)
 
     def _setup_datos_marea_group(self) -> QGroupBox:
         """Configura el QGroupBox de 'Datos Generales de Marea'."""
@@ -79,16 +92,6 @@ class MainWindow(QMainWindow):
         self.buque_info_label = QLineEdit()
         self.buque_info_label.setReadOnly(True)
         self.buque_info_label.setStyleSheet("font-style: italic; color: #555;")
-
-        # Conexión de señales
-        self.num_marea.textChanged.connect(self._update_process_buttons_state)
-        self.anio_marea.textChanged.connect(self._update_process_buttons_state)
-        self.observador_combo.currentIndexChanged.connect(self._update_process_buttons_state)
-        self.buque_combo.currentIndexChanged.connect(self._update_process_buttons_state)
-        self.num_marea.textChanged.connect(self._save_state)
-        self.anio_marea.textChanged.connect(self._save_state)
-        self.observador_combo.currentIndexChanged.connect(self._save_state)
-        self.buque_combo.currentIndexChanged.connect(self._save_state)
 
         # Layouts
         num_marea_layout = QVBoxLayout()
