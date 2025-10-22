@@ -79,3 +79,35 @@ python main.py
 
 ¡Listo! La ventana principal de la aplicación "Control de Mareas" debería aparecer en tu pantalla.
 
+---
+
+## Generación de Ejecutable (.exe)
+
+Para distribuir la aplicación como un único archivo ejecutable, utilizamos **PyInstaller**.
+
+### Prerrequisitos
+
+Asegúrate de tener todas las dependencias de desarrollo instaladas:
+
+```sh
+pip install -r requirements.txt
+```
+
+### Generar el Ejecutable
+
+He preparado un script `build.bat` que simplifica el proceso. Este script se encuentra en la carpeta `Python`.
+
+1.  Abre una terminal y asegúrate de tener tu **entorno virtual activado**.
+2.  Navega a la carpeta `Python`:
+    ```sh
+    cd Python
+    ```
+3.  Ejecuta el script de compilación:
+    ```sh
+    build.bat
+    ```
+
+PyInstaller creará las carpetas `build` y `dist`. Dentro de `dist`, encontrarás el archivo `ControlMareas.exe` junto con todas las dependencias necesarias.
+
+**Nota:** El script está configurado para crear un ejecutable que incluye los estilos (`.qss`) y otros recursos necesarios.
+

@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 # Ajustar la ruta para importar desde las carpetas de la arquitectura
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from util import resource_path
 from infrastructure.repositories import CatalogRepository
 from infrastructure import config_manager
 from presentation.stage_list_item_widget import StageListItemWidget
@@ -202,9 +203,9 @@ class MainWindow(QMainWindow):
 
     def _load_catalogs(self):
         """Carga los datos de los catálogos en los ComboBox."""
-        foxpro_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'FoxPro'))
+        data_path = resource_path('data')
         
-        repo = CatalogRepository(base_path=foxpro_path)
+        repo = CatalogRepository(base_path=data_path)
 
         observadores = repo.get_observadores()
         self.observador_combo.addItem("Seleccione un observador...", userData=None)

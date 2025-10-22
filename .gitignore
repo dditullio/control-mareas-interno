@@ -29,3 +29,8 @@ __pycache__/
 # Archivos generados por el sistema operativo
 .DS_Store
 Thumbs.db
+
+# Artefactos de PyInstaller
+build/
+dist/
+*.spec

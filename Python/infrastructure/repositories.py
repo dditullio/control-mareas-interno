@@ -41,9 +41,9 @@ class CatalogRepository:
         return sorted(especies, key=lambda x: x.nom_vul_cas)
 
     def get_buques(self) -> List[Buque]:
-        """Lee 'buques y sus datos.DBF' y devuelve una lista de entidades Buque."""
+        """Lee 'Buques.DBF' y devuelve una lista de entidades Buque."""
         buques = []
-        dbf_path = self._get_full_path("buques y sus datos.DBF")
+        dbf_path = self._get_full_path("Buques.DBF")
         try:
             table = dbf.Table(dbf_path, codepage='cp1252')
             table.open(dbf.READ_ONLY)
@@ -75,9 +75,9 @@ class CatalogRepository:
         return sorted(buques, key=lambda x: x.nombre)
 
     def get_observadores(self) -> List[Observador]:
-        """Lee 'OBSERVAD.DBF' y devuelve una lista de entidades Observador."""
+        """Lee 'Observadores.DBF' y devuelve una lista de entidades Observador."""
         observadores = []
-        dbf_path = self._get_full_path("OBSERVAD.DBF")
+        dbf_path = self._get_full_path("Observadores.DBF")
         try:
             table = dbf.Table(dbf_path, codepage='cp1252')
             table.open(dbf.READ_ONLY)
