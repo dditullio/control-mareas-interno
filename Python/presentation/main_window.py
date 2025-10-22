@@ -55,19 +55,6 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
 
-        # Barra superior con botón de tema alineado a la derecha
-        top_bar = QWidget()
-        top_layout = QHBoxLayout(top_bar)
-        top_layout.setContentsMargins(0, 0, 0, 0)
-        top_layout.addItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        self.theme_toggle_btn = QPushButton("🌙" if self.theme == 'light' else "☀")
-        self.theme_toggle_btn.setObjectName("themeToggleButton")
-        self.theme_toggle_btn.setToolTip("Alternar tema Claro/Oscuro")
-        self.theme_toggle_btn.setFixedSize(28, 28)
-        self.theme_toggle_btn.clicked.connect(self._toggle_theme)
-        top_layout.addWidget(self.theme_toggle_btn)
-        main_layout.addWidget(top_bar)
-
         main_layout.addWidget(self._setup_datos_marea_group())
 
         listas_container = QWidget()
@@ -113,6 +100,12 @@ class MainWindow(QMainWindow):
         self.buque_info_label = QLineEdit()
         self.buque_info_label.setReadOnly(True)
         self.buque_info_label.setStyleSheet("font-style: italic; color: #555;")
+        # Botón de alternancia de tema junto al label "Buque"
+        self.theme_toggle_btn = QPushButton("🌙" if self.theme == 'light' else "☀")
+        self.theme_toggle_btn.setObjectName("themeToggleButton")
+        self.theme_toggle_btn.setToolTip("Alternar tema Claro/Oscuro")
+        self.theme_toggle_btn.setFixedSize(28, 28)
+        self.theme_toggle_btn.clicked.connect(self._toggle_theme)
 
         # Layouts
         num_marea_layout = QVBoxLayout()
@@ -126,7 +119,11 @@ class MainWindow(QMainWindow):
         observador_layout.addWidget(self.observador_combo)
         observador_layout.addWidget(self.observador_info_label)
         buque_layout = QVBoxLayout()
-        buque_layout.addWidget(QLabel("Buque"))
+        buque_label_row = QHBoxLayout()
+        buque_label_row.addWidget(QLabel("Buque"))
+        buque_label_row.addItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        buque_label_row.addWidget(self.theme_toggle_btn)
+        buque_layout.addLayout(buque_label_row)
         buque_layout.addWidget(self.buque_combo)
         buque_layout.addWidget(self.buque_info_label)
 
