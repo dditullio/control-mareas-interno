@@ -2,6 +2,8 @@ import os
 import sys
 from datetime import datetime
 from PySide6.QtCore import Qt, QEvent, QDate
+from PySide6.QtGui import QGuiApplication
+from PySide6.QtWidgets import QStyle
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QGroupBox, QLabel, QLineEdit, QComboBox, QPushButton, QListWidget,
@@ -48,6 +50,8 @@ class MainWindow(QMainWindow):
         self._load_catalogs()
         self._load_state()
         self._connect_signals()
+        # Centrado se realiza en showEvent para obtener frame real
+        self._centered = False
 
     def _setup_ui(self):
         """Configura la interfaz de usuario."""
@@ -67,6 +71,25 @@ class MainWindow(QMainWindow):
 
         self._setup_enter_navigation()
         self._update_process_buttons_state()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        if not getattr(self, '_centered', False):
+            self._center_on_screen()
+            self._centered = True
+
+    def _center_on_screen(self) -> None:
+        """Centra la ventana usando la geometría disponible de la pantalla."""
+        screen = self.screen() or QGuiApplication.primaryScreen()
+        if not screen:
+            return
+        available = screen.availableGeometry()
+        frame = self.frameGeometry()
+        size = frame.size()
+        if size.isEmpty():
+            size = self.size() if not self.size().isEmpty() else self.sizeHint()
+        target_rect = QStyle.alignedRect(Qt.LeftToRight, Qt.AlignCenter, size, available)
+        self.move(target_rect.topLeft())
 
     def _connect_signals(self):
         """Conecta las señales de los widgets a sus respectivos slots."""
