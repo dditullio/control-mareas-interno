@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt, QEvent, QDate
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QGroupBox, QLabel, QLineEdit, QComboBox, QPushButton, QListWidget,
-    QFormLayout, QListWidgetItem, QDateEdit, QMessageBox
+    QFormLayout, QListWidgetItem, QDateEdit, QMessageBox, QSpacerItem, QSizePolicy
 )
 
 # Ajustar la ruta para importar desde las carpetas de la arquitectura
@@ -35,7 +35,14 @@ class MainWindow(QMainWindow):
         self.all_species = []
         self.species_search_mode = 'common_first'  # 'common_first' or 'scientific_first'
         self.process_buttons = []
-
+        # Tema actual (default: light). Intentar leer de config.
+        self.theme = 'light'
+        try:
+            _cfg = config_manager.load_config() or {}
+            if _cfg.get('theme') in ('light', 'dark'):
+                self.theme = _cfg['theme']
+        except Exception:
+            pass
 
         self._setup_ui()
         self._load_catalogs()
@@ -47,6 +54,19 @@ class MainWindow(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
+
+        # Barra superior con botón de tema alineado a la derecha
+        top_bar = QWidget()
+        top_layout = QHBoxLayout(top_bar)
+        top_layout.setContentsMargins(0, 0, 0, 0)
+        top_layout.addItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        self.theme_toggle_btn = QPushButton("🌙" if self.theme == 'light' else "☀")
+        self.theme_toggle_btn.setObjectName("themeToggleButton")
+        self.theme_toggle_btn.setToolTip("Alternar tema Claro/Oscuro")
+        self.theme_toggle_btn.setFixedSize(28, 28)
+        self.theme_toggle_btn.clicked.connect(self._toggle_theme)
+        top_layout.addWidget(self.theme_toggle_btn)
+        main_layout.addWidget(top_bar)
 
         main_layout.addWidget(self._setup_datos_marea_group())
 
@@ -258,6 +278,7 @@ class MainWindow(QMainWindow):
             'anio_marea': self.anio_marea.text(),
             'observador_cod': self.observador_combo.currentData().obs_nro if self.observador_combo.currentIndex() > 0 else None,
             'buque_cod': self.buque_combo.currentData().buque_cod if self.buque_combo.currentIndex() > 0 else None,
+            'theme': self.theme,
             'etapas': etapas,
             'especies': especies
         }
@@ -268,6 +289,12 @@ class MainWindow(QMainWindow):
         state = config_manager.load_config()
         if not state:
             return
+
+        # Tema (mantener coherencia con lo aplicado por main.py)
+        if state.get('theme') in ('light', 'dark'):
+            self.theme = state['theme']
+            if hasattr(self, 'theme_toggle_btn'):
+                self.theme_toggle_btn.setText("🌙" if self.theme == 'light' else "☀")
 
         self.num_marea.setText(state.get('num_marea', ''))
         self.anio_marea.setText(state.get('anio_marea', str(datetime.now().year)))
@@ -300,6 +327,23 @@ class MainWindow(QMainWindow):
                     break
         
         self._update_process_buttons_state()
+
+    def _toggle_theme(self):
+        """Alterna entre tema claro y oscuro, aplica estilos y persiste la elección."""
+        self.theme = 'dark' if self.theme == 'light' else 'light'
+        # Actualizar ícono del botón
+        if hasattr(self, 'theme_toggle_btn'):
+            self.theme_toggle_btn.setText("🌙" if self.theme == 'light' else "☀")
+        # Cargar QSS del tema y aplicarlo
+        qss_rel = f"presentation/styles/{'dark.qss' if self.theme == 'dark' else 'light.qss'}"
+        qss_path = resource_path(qss_rel)
+        try:
+            with open(qss_path, 'r', encoding='utf-8') as f:
+                QApplication.instance().setStyleSheet(f.read())
+        except FileNotFoundError:
+            pass
+        # Guardar preferencia de tema junto con el resto del estado
+        self._save_state()
 
     def _update_observador_info(self) -> None:
         """Actualiza el campo de texto con la información del observador seleccionado."""

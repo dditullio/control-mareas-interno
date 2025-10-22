@@ -3,6 +3,7 @@
     "anio_marea": "2025",
     "observador_cod": null,
     "buque_cod": null,
+    "theme": "light",
     "etapas": [],
     "especies": []
 }

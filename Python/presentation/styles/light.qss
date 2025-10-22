@@ -52,3 +52,20 @@ QPushButton:disabled {
     background-color: #E0E0E0;
     color: #9E9E9E;
 }
+
+/* Botón de alternancia de tema */
+#themeToggleButton {
+    background-color: #E0E0E0;
+    color: #333333;
+    border: none;
+    border-radius: 14px; /* circular para 28x28 */
+    padding: 0px;
+    min-width: 28px;
+    min-height: 28px;
+}
+#themeToggleButton:hover {
+    background-color: #D6D6D6;
+}
+#themeToggleButton:pressed {
+    background-color: #C2C2C2;
+}
